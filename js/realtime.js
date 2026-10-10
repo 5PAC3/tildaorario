@@ -38,6 +38,8 @@ function initTheme() {
 
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
         if (!isMemorized() && !isPrinting) {
+            const current = document.documentElement.getAttribute('data-theme');
+            if (current !== 'dark' && current !== 'light') return;
             const next = e.matches ? 'dark' : 'light';
             document.documentElement.setAttribute('data-theme', next);
             updateThemeIcon(next);
@@ -50,13 +52,14 @@ function updateThemeIcon(theme) {
     if (!toggle) return;
     const icon = toggle.querySelector('i');
     if (icon) {
-        icon.className = theme === 'dark' ? 'nf nf-fa-sun' : 'nf nf-fa-moon';
+        const cls = theme === 'dark' ? 'nf nf-fa-sun' : theme === 'light' ? 'nf nf-fa-moon' : 'nf nf-fa-terminal';
+        icon.className = cls;
     }
 }
 
 function toggleTheme() {
     const current = document.documentElement.getAttribute('data-theme') || 'dark';
-    const next = current === 'dark' ? 'light' : 'dark';
+    const next = current === 'dark' ? 'light' : current === 'light' ? 'brutal' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
     updateThemeIcon(next);
     if (isMemorized()) {
