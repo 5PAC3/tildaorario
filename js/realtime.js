@@ -62,6 +62,10 @@ function toggleTheme() {
     const next = current === 'dark' ? 'light' : current === 'light' ? 'brutal' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
     updateThemeIcon(next);
+    if (document.getElementById('scheduleTable')) {
+        generaOrario();
+        showToday();
+    }
     if (isMemorized()) {
         localStorage.setItem('theme', next);
     }
@@ -100,8 +104,8 @@ const RAW_SCHEDULE = {
 };
 
 const SUBJECT_COLORS = [
-    '#8b8fff', '#7dd37d', '#ffc86b', '#ff8a8a', '#c0aaff',
-    '#f4a1d0', '#6beeff', '#c8e87d', '#ffb87a', '#7de0d8',
+    '#6b7f9e', '#7a8a5f', '#a8894f', '#8a7a9e', '#a0705c',
+    '#7d8a72', '#6e7a85', '#9c7380', '#5f8a85', '#a3906e',
 ];
 
 let subjectColorMap = {};
@@ -175,6 +179,8 @@ function generaOrario() {
     const tbody = table.querySelector('tbody');
     tbody.innerHTML = '';
 
+    const brutal = document.documentElement.getAttribute('data-theme') === 'brutal';
+
     for (let s = 0; s < TOTAL_SLOTS; s++) {
         const tr = document.createElement('tr');
         tr.dataset.slot = s;
@@ -192,14 +198,39 @@ function generaOrario() {
 
         for (let day = 0; day < 5; day++) {
             const cell = grid[s][day];
+
+            if (brutal && cell && !cell.isFirst && !cell.isOnly) {
+                continue;
+            }
+
             const td = document.createElement('td');
             td.dataset.day = day;
-            td.dataset.slot = s;
 
             if (!cell) {
+                td.dataset.slot = s;
                 td.textContent = '-';
                 td.classList.add('empty');
+            } else if (brutal) {
+                const endSlot = getLessonEndSlot(day, s);
+                td.rowSpan = endSlot - s + 1;
+                td.dataset.startSlot = s;
+                td.dataset.endSlot = endSlot;
+                td.style.setProperty('--subject-color', cell.color);
+                td.classList.add('block');
+                td.innerHTML = `
+                    <span class="subject-cell">${cell.subject}</span>
+                    <span class="room-cell">${cell.room || ''}</span>
+                    ${cell.link ? '<span class="link-icon" aria-hidden="true">↗</span>' : ''}
+                `;
+                if (cell.room) {
+                    td.dataset.room = cell.room;
+                    if (cell.link) {
+                        td.dataset.link = cell.link;
+                    }
+                }
+                td.dataset.subject = cell.subject;
             } else {
+                td.dataset.slot = s;
                 td.style.setProperty('--subject-color', cell.color);
                 td.classList.add('block');
 
@@ -344,6 +375,15 @@ function updateCurrentSlotIndicator(currentSlot) {
     if (currentSlot >= 0 && currentSlot < TOTAL_SLOTS) {
         const idxG = getGiornoIndex();
         if (idxG === -1) return;
+        const lessonCells = document.querySelectorAll(`#scheduleTable tbody td[data-day="${idxG}"][data-start-slot]`);
+        for (const cell of lessonCells) {
+            const start = Number(cell.dataset.startSlot);
+            const end = Number(cell.dataset.endSlot);
+            if (currentSlot >= start && currentSlot <= end) {
+                cell.classList.add('current-cell');
+                return;
+            }
+        }
         const row = document.querySelector(`#scheduleTable tbody tr[data-slot="${currentSlot}"]`);
         if (row) {
             const cell = row.querySelector(`td[data-day="${idxG}"]`);
@@ -410,7 +450,7 @@ function saveDensity(value) {
 
 function calcFitDensity() {
     const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
-    const padY = 0.3 * rem;
+    const padY = 0.4 * rem;
     const border = 1;
 
     const tableWrapper = document.querySelector('.table-wrapper');
