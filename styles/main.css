@@ -163,6 +163,31 @@ td.loading-placeholder {
     background: var(--cal-header-bg);
 }
 
+/* Loading screen: spinner ASCII a schermo intero, rimosso su window.load */
+.loading-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    background: var(--cal-bg);
+    font-family: 'JetBrains Mono Nerd', ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+}
+.loading-screen .spinner {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--cal-text);
+}
+.loading-screen .loading-text {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--cal-text-muted);
+}
+
 td.empty { color: var(--cal-text-muted); opacity: 0.2; }
 tr:nth-child(odd) td.empty { background: color-mix(in srgb, var(--cal-bg) 85%, var(--cal-cell-alt)); }
 tr:nth-child(even) td.empty { background: color-mix(in srgb, var(--cal-bg) 40%, var(--cal-cell-alt)); }
@@ -548,6 +573,7 @@ footer a:hover { color: var(--accent-color); }
 
 /* Placeholder di caricamento: blocco grigio statico, // LOADING... */
 [data-theme="brutal"] .loading-placeholder { background: var(--cal-border); color: var(--cal-text-muted); }
+[data-theme="brutal"] .loading-screen .spinner { color: var(--cal-text-ice); }
 
 @media (prefers-reduced-motion: reduce) {
     [data-theme="brutal"] td.current-cell { animation: none; }
@@ -637,7 +663,7 @@ footer a:hover { color: var(--accent-color); }
     html, body { background: var(--cal-bg) !important; height: auto; min-height: 0; }
     .container, table, th, td { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     header, nav, .header-controls, .current-info, .schedule-header,
-    .legend, .actions-bar, footer, .easter-egg { display: none !important; }
+    .legend, .actions-bar, footer, .easter-egg, .loading-screen { display: none !important; }
     .container { max-width: none; margin: 0; padding: 10mm; background: var(--cal-bg) !important; min-height: 100vh; }
     @supports (-moz-appearance: none) {
         .container { min-height: calc(100vh - 15mm); }
