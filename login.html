@@ -5,24 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>accedi - sartorario</title>
     <link rel="icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles/main.css">
     <style>
-        @font-face {
-            font-family: 'JetBrains Mono Nerd';
-            src: url('https://raw.githubusercontent.com/Nick2bad4u/nerd-fonts-woff2/main/fonts/woff2/JetBrainsMono/JetBrainsMonoNerdFont-Regular.woff2') format('woff2');
-            font-display: swap;
-        }
-
-        :root {
-            --cal-bg: #0d1117;
-            --cal-header-bg: #161b22;
-            --cal-border: #30363d;
-            --cal-text: #c9d1d9;
-            --cal-text-muted: #8b949e;
-            --accent-color: #44633F;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             background: var(--cal-bg);
             color: var(--cal-text);
@@ -154,7 +138,7 @@
             color: var(--cal-text);
         }
 
-        .spinner {
+        .login-spinner {
             width: 18px;
             height: 18px;
             border: 2px solid rgba(255,255,255,0.3);
@@ -168,7 +152,7 @@
             to { transform: rotate(360deg); }
         }
 
-        .btn-primary.loading .spinner {
+        .btn-primary.loading .login-spinner {
             display: inline-block;
         }
 
@@ -178,6 +162,13 @@
     </style>
 </head>
 <body>
+    <div class="loading-screen" id="loadingScreen">
+        <span class="spinner" id="spinner">\</span>
+        <span class="loading-text">// LOADING...</span>
+    </div>
+    <button class="btn theme-toggle" id="themeToggle" title="Cambia tema" aria-label="Cambia tema" style="position: fixed; top: 1rem; right: 1rem;">
+        <i class="nf nf-fa-sun"></i>
+    </button>
     <div class="login-container">
         <div class="login-card">
             <div class="login-header">
@@ -200,7 +191,7 @@
 
                 <button type="submit" class="btn btn-primary" id="submitBtn">
                     <span class="btn-text">Accedi</span>
-                    <span class="spinner"></span>
+                    <span class="login-spinner"></span>
                 </button>
             </form>
 
@@ -214,6 +205,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase.js"></script>
+    <script src="js/theme.js"></script>
     <script>
         const form = document.getElementById('loginForm');
         const errorMsg = document.getElementById('errorMsg');

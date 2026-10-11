@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
+    <div class="loading-screen" id="loadingScreen">
+        <span class="spinner" id="spinner">\</span>
+        <span class="loading-text">// LOADING...</span>
+    </div>
     <div class="container">
         <header>
             <div class="wip-banner">
@@ -63,7 +67,9 @@
 
         <footer>
             <p class="disclaimer">Orario non ufficiale. Gli orari, le aule e le materie possono contenere errori. Per informazioni attendibili consulta il <a href="https://www.polimi.it" target="_blank" rel="noopener">sito ufficiale del Politecnico di Milano</a>.</p>
-            <p><span id="eventCount">0</span> eventi salvati · sarto - A.S. 2026/2027</p>
+            <p class="footer-line">
+                <span><span id="eventCount">0</span> eventi</span><span class="footer-sep">|</span><span>sarto</span><span class="footer-sep">|</span><span>A.S. 2026/2027</span><span class="footer-sep">|</span><a href="https://github.com/lowtaper42069/sigmaorario" target="_blank" rel="noopener"><i class="nf nf-dev-github"></i> GitHub</a>
+            </p>
         </footer>
     </div>
 
@@ -155,6 +161,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase.js"></script>
+    <script src="js/theme.js"></script>
     <script>
         let currentDate = new Date();
         let events = [];

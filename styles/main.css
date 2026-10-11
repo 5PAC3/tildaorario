@@ -626,6 +626,38 @@ footer a:hover { color: var(--accent-color); }
 [data-theme="brutal"] .error-message .prompt { color: var(--accent-color); }
 [data-theme="brutal"] .error-detail { color: var(--cal-text-muted); }
 
+/* Calendario */
+[data-theme="brutal"] .wip-banner { border-radius: 0; }
+[data-theme="brutal"] .cal-nav { border-radius: 0; border: 2px solid var(--cal-border-strong); }
+[data-theme="brutal"] .btn-icon { border-radius: 0; border: 2px solid var(--cal-border-strong); }
+[data-theme="brutal"] .btn-icon:hover { background: var(--cal-text); color: var(--cal-bg); }
+[data-theme="brutal"] .cal-grid { border-radius: 0; border: 2px solid var(--cal-border-strong); }
+[data-theme="brutal"] .cal-header { border: 2px solid var(--cal-border-strong); border-bottom: none; }
+[data-theme="brutal"] .cal-day.today .day-num { border-radius: 0; }
+[data-theme="brutal"] .day-event { border-radius: 0; }
+[data-theme="brutal"] .modal-box { border-radius: 0; border: 2px solid var(--cal-border-strong); }
+[data-theme="brutal"] .modal-header { border-bottom: 2px solid var(--cal-border-strong); }
+[data-theme="brutal"] .modal-footer { border-top: 2px solid var(--cal-border-strong); }
+[data-theme="brutal"] .form-group input, [data-theme="brutal"] .form-group select, [data-theme="brutal"] .form-group textarea { border-radius: 0; }
+[data-theme="brutal"] .color-picker label { border-radius: 0; }
+[data-theme="brutal"] .color-picker input:checked + label { border-color: var(--cal-text-ice); }
+[data-theme="brutal"] .event-detail .event-color { border-radius: 0; }
+[data-theme="brutal"] .event-detail .event-notes { border-radius: 0; }
+
+/* Snake */
+[data-theme="brutal"] .game-container { border-radius: 0; border: 2px solid var(--cal-border-strong); }
+[data-theme="brutal"] #gameCanvas { border-radius: 0; }
+[data-theme="brutal"] .settings-menu { border-radius: 0; border: 2px solid var(--cal-border-strong); box-shadow: none; }
+[data-theme="brutal"] .settings-menu button { border-radius: 0; }
+[data-theme="brutal"] .btn.secondary { background: transparent; border: 2px solid var(--cal-border-light); }
+[data-theme="brutal"] .btn.secondary:hover { background: var(--cal-text); border-color: var(--cal-text); color: var(--cal-bg); }
+[data-theme="brutal"] .dpad-btn { border-radius: 0; border: 2px solid var(--cal-border-strong); }
+
+/* Login */
+[data-theme="brutal"] .login-card { border-radius: 0; border: 2px solid var(--cal-border-strong); }
+[data-theme="brutal"] .error { border-radius: 0; }
+[data-theme="brutal"] .login-spinner { border-radius: 0; border-color: var(--cal-border-light); border-top-color: var(--cal-text-ice); }
+
 @media (prefers-reduced-motion: reduce) {
     [data-theme="brutal"] td.current-cell { animation: none; }
 }
