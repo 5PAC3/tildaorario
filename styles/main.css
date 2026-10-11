@@ -575,6 +575,57 @@ footer a:hover { color: var(--accent-color); }
 [data-theme="brutal"] .loading-placeholder { background: var(--cal-border); color: var(--cal-text-muted); }
 [data-theme="brutal"] .loading-screen .spinner { color: var(--cal-text-ice); }
 
+/* Pannello errore 404 */
+.error-panel {
+    max-width: 500px;
+    margin: 4rem auto;
+    padding: 2rem;
+    background: var(--cal-header-bg);
+    border: 1px solid var(--cal-border);
+    border-radius: 8px;
+    text-align: center;
+}
+.error-code {
+    font-size: 4rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+    line-height: 1;
+}
+.error-message {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--cal-text);
+    margin-bottom: 1rem;
+}
+.error-message .prompt {
+    color: var(--accent-color);
+    margin-right: 0.4rem;
+}
+.error-detail {
+    font-size: 0.8rem;
+    color: var(--cal-text-muted);
+    margin-bottom: 0.3rem;
+    text-align: left;
+}
+.error-actions {
+    margin-top: 1.5rem;
+}
+
+[data-theme="brutal"] .error-panel {
+    border: 2px solid var(--cal-border-strong);
+    border-radius: 0;
+    background: var(--cal-header-bg);
+}
+[data-theme="brutal"] .error-code {
+    font-size: 5rem;
+    color: var(--cal-text-ice);
+    letter-spacing: 0.1em;
+}
+[data-theme="brutal"] .error-message { color: var(--cal-text); }
+[data-theme="brutal"] .error-message .prompt { color: var(--accent-color); }
+[data-theme="brutal"] .error-detail { color: var(--cal-text-muted); }
+
 @media (prefers-reduced-motion: reduce) {
     [data-theme="brutal"] td.current-cell { animation: none; }
 }

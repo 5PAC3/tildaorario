@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sarto404</title>
+    <link rel="icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Sigmaorario</h1>
+            <nav class="main-nav">
+                <a href="index.html">Orario</a>
+                <a href="calendario.html">Calendario</a>
+            </nav>
+            <button class="btn theme-toggle" id="themeToggle" title="Cambia tema" aria-label="Cambia tema">
+                <i class="nf nf-fa-sun"></i>
+            </button>
+        </header>
+
+        <main>
+            <div class="error-panel">
+                <div class="error-code">404</div>
+                <div class="error-message">
+                    <span class="prompt">&gt;</span> ERRORE: PAGINA NON TROVATA
+                </div>
+                <div class="error-detail">
+                    // Il percorso richiesto non esiste o è stato spostato.
+                </div>
+                <div class="error-detail">
+                    // Verifica l'URL o torna all'orario.
+                </div>
+                <div class="error-actions">
+                    <a href="index.html" class="btn">
+                        <i class="nf nf-fa-arrow_left"></i> Torna all'orario
+                    </a>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p class="disclaimer">Orario non ufficiale. Gli orari, le aule e le materie possono contenere errori. Per informazioni attendibili consulta il <a href="https://www.polimi.it" target="_blank" rel="_blank">sito ufficiale del Politecnico di Milano</a>.</p>
+            <p class="footer-line">
+                <span>sarto</span><span class="footer-sep">|</span><span>A.S. 2026/2027</span><span class="footer-sep">|</span><a href="https://github.com/lowtaper42069/sigmaorario" target="_blank" rel="_blank"><i class="nf nf-dev-github"></i> GitHub</a>
+            </p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/realtime.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const themeToggle = document.getElementById('themeToggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', toggleTheme);
+        }
+    });
+    </script>
+    <a href="snake.html" class="easter-egg">🐍</a>
+</body>
+</html>
