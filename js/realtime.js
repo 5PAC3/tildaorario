@@ -29,15 +29,14 @@ function updateLockUI() {
 }
 
 function initTheme() {
-    const memorized = isMemorized();
-    const saved = memorized ? localStorage.getItem('theme') : null;
+    const saved = localStorage.getItem('theme');
     const theme = saved || getSystemTheme();
     document.documentElement.setAttribute('data-theme', theme);
     updateThemeIcon(theme);
     updateLockUI();
 
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-        if (!isMemorized() && !isPrinting) {
+        if (!isMemorized() && !isPrinting && !localStorage.getItem('theme')) {
             const current = document.documentElement.getAttribute('data-theme');
             if (current !== 'dark' && current !== 'light') return;
             const next = e.matches ? 'dark' : 'light';
@@ -66,9 +65,7 @@ function toggleTheme() {
         generaOrario();
         showToday();
     }
-    if (isMemorized()) {
-        localStorage.setItem('theme', next);
-    }
+    localStorage.setItem('theme', next);
 }
 
 document.addEventListener('DOMContentLoaded', initTheme);
@@ -425,6 +422,16 @@ function initDensity() {
         if (isMemorized()) saveDensity(this.value);
     });
 
+    const setDensity = (v) => {
+        slider.value = v;
+        applyDensity(v);
+        if (isMemorized()) saveDensity(v);
+    };
+    const minIcon = document.querySelector('.density-control .nf-fa-minimize');
+    const maxIcon = document.querySelector('.density-control .nf-fa-maximize');
+    if (minIcon) minIcon.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); setDensity(slider.min); });
+    if (maxIcon) maxIcon.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); setDensity(slider.max); });
+
     if (toggle) {
         toggle.addEventListener('click', function () {
             const next = !isMemorized();
@@ -434,7 +441,6 @@ function initDensity() {
                 localStorage.setItem('theme', document.documentElement.getAttribute('data-theme') || 'dark');
             } else {
                 localStorage.removeItem('settingsMemorize');
-                localStorage.removeItem('theme');
                 localStorage.removeItem('density');
                 localStorage.removeItem('densityViewport');
             }

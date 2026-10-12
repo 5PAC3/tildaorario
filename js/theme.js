@@ -1,7 +1,6 @@
 /* Theme toggle + loading screen condiviso per tutte le pagine */
 (function() {
-    var memorized = localStorage.getItem('settingsMemorize') === '1';
-    var saved = memorized ? localStorage.getItem('theme') : null;
+    var saved = localStorage.getItem('theme');
     var theme = saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     document.documentElement.setAttribute('data-theme', theme);
 
@@ -18,7 +17,7 @@
         var next = cur === 'dark' ? 'light' : cur === 'light' ? 'brutal' : 'dark';
         document.documentElement.setAttribute('data-theme', next);
         updateIcon(next);
-        if (localStorage.getItem('settingsMemorize') === '1') localStorage.setItem('theme', next);
+        localStorage.setItem('theme', next);
     };
 
     document.addEventListener('DOMContentLoaded', function() {
