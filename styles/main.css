@@ -458,9 +458,9 @@ footer a:hover { color: var(--accent-color); }
 
 [data-theme="brutal"] .btn {
     border-radius: 0;
-    border: 2px solid var(--cal-border-light);
+    border: 2px solid var(--cal-border);
     background: transparent;
-    color: var(--cal-text);
+    color: var(--cal-text-muted);
     text-transform: uppercase;
     font-weight: 700;
     font-size: 0.8rem;
@@ -472,19 +472,20 @@ footer a:hover { color: var(--accent-color); }
     color: var(--cal-bg);
 }
 [data-theme="brutal"] .btn-primary {
+    background: transparent;
+    border-color: var(--cal-border);
+    color: var(--cal-text-muted);
+}
+[data-theme="brutal"] .btn-primary:hover {
     background: var(--cal-text-ice);
     border-color: var(--cal-text-ice);
     color: var(--brutal-ink);
 }
-[data-theme="brutal"] .btn-primary:hover {
-    background: transparent;
-    border-color: var(--cal-border-light);
-    color: var(--cal-text-ice);
-}
 
-[data-theme="brutal"] .theme-toggle, [data-theme="brutal"] .lock-toggle { border-radius: 0; border: 2px solid var(--cal-border-strong); background: transparent; color: var(--cal-text); }
+[data-theme="brutal"] .theme-toggle, [data-theme="brutal"] .lock-toggle { border-radius: 0; border: 2px solid var(--cal-border); background: transparent; color: var(--cal-text-muted); }
 [data-theme="brutal"] .theme-toggle:hover, [data-theme="brutal"] .lock-toggle:hover { background: var(--cal-text); border-color: var(--cal-text); color: var(--cal-bg); }
-[data-theme="brutal"] .lock-toggle.locked { background: var(--cal-text-ice); border-color: var(--cal-text-ice); color: var(--brutal-ink); }
+/* Lock bloccato: resta acceso anche senza hover */
+[data-theme="brutal"] .lock-toggle.locked, [data-theme="brutal"] .lock-toggle.locked:hover { background: var(--cal-text-ice); border-color: var(--cal-text-ice); color: var(--brutal-ink); }
 
 [data-theme="brutal"] td, [data-theme="brutal"] th { border-color: var(--cal-border); }
 [data-theme="brutal"] tr.hour-separator td { border-top: 2px solid var(--cal-border-light); }
@@ -632,7 +633,7 @@ footer a:hover { color: var(--accent-color); }
 /* Calendario */
 [data-theme="brutal"] .wip-banner { border-radius: 0; }
 [data-theme="brutal"] .cal-nav { border-radius: 0; border: 2px solid var(--cal-border-strong); }
-[data-theme="brutal"] .btn-icon { border-radius: 0; border: 2px solid var(--cal-border-strong); }
+[data-theme="brutal"] .btn-icon { border-radius: 0; border: 2px solid var(--cal-border); background: transparent; color: var(--cal-text-muted); }
 [data-theme="brutal"] .btn-icon:hover { background: var(--cal-text); color: var(--cal-bg); }
 [data-theme="brutal"] .cal-grid { border-radius: 0; border: 2px solid var(--cal-border-strong); }
 [data-theme="brutal"] .cal-header { border: 2px solid var(--cal-border-strong); border-bottom: none; }
@@ -651,10 +652,11 @@ footer a:hover { color: var(--accent-color); }
 [data-theme="brutal"] .game-container { border-radius: 0; border: 2px solid var(--cal-border-strong); }
 [data-theme="brutal"] #gameCanvas { border-radius: 0; }
 [data-theme="brutal"] .settings-menu { border-radius: 0; border: 2px solid var(--cal-border-strong); box-shadow: none; }
-[data-theme="brutal"] .settings-menu button { border-radius: 0; }
-[data-theme="brutal"] .btn.secondary { background: transparent; border: 2px solid var(--cal-border-light); }
+[data-theme="brutal"] .settings-menu button { border-radius: 0; background: transparent; color: var(--cal-text-muted); }
+[data-theme="brutal"] .btn.secondary { background: transparent; border: 2px solid var(--cal-border); color: var(--cal-text-muted); }
 [data-theme="brutal"] .btn.secondary:hover { background: var(--cal-text); border-color: var(--cal-text); color: var(--cal-bg); }
-[data-theme="brutal"] .dpad-btn { border-radius: 0; border: 2px solid var(--cal-border-strong); }
+[data-theme="brutal"] .dpad-btn { border-radius: 0; border: 2px solid var(--cal-border); background: transparent; color: var(--cal-text-muted); }
+[data-theme="brutal"] .dpad-btn:hover { background: var(--cal-text); border-color: var(--cal-text); color: var(--cal-bg); }
 
 /* Login */
 [data-theme="brutal"] .login-card { border-radius: 0; border: 2px solid var(--cal-border-strong); }
