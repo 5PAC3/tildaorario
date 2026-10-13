@@ -709,9 +709,9 @@ footer a:hover { color: var(--accent-color); }
 /* Responsive */
 @media (max-width: 768px) {
     .container { padding: 0.75rem; }
-    header { margin-bottom: 1rem; padding-bottom: 1rem; flex-direction: column; align-items: center; gap: 0.6rem; }
+    header { margin-bottom: 1rem; padding-bottom: 1rem; justify-content: center; gap: 0.6rem; }
     header h1 { font-size: 1.25rem; }
-    .header-controls { justify-content: center; }
+    .header-controls { flex-basis: 100%; justify-content: center; }
     .main-nav { flex-wrap: wrap; gap: 0.25rem; padding: 0.25rem; }
     .main-nav a { padding: 0.4rem 0.6rem; font-size: 0.8rem; }
     .schedule-header { flex-direction: column; gap: 0.75rem; padding: 0.75rem; }
@@ -725,8 +725,7 @@ footer a:hover { color: var(--accent-color); }
     td.has-link::after { font-size: 0.45rem; }
     td.subject-cell { font-size: 1rem; }
     td.room-cell { font-size: 0.75rem; }
-    .current-info { display: grid; grid-template-columns: auto 1fr; gap: 0.35rem 1rem; padding: 0.6rem 0.75rem; font-size: 0.8rem; }
-    .info-item:nth-child(n+3) { grid-column: 1 / -1; }
+    .current-info { display: flex; flex-direction: column; gap: 0.35rem; padding: 0.6rem 0.75rem; font-size: 0.8rem; }
     .legend { padding: 0.75rem; }
     .legend-item { font-size: 0.75rem; }
     .actions-bar { gap: 0.5rem; padding: 0.75rem; }
