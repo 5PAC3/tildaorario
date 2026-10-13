@@ -726,6 +726,8 @@ footer a:hover { color: var(--accent-color); }
     td.subject-cell { font-size: 1rem; }
     td.room-cell { font-size: 0.75rem; }
     .current-info { display: flex; flex-direction: column; gap: 0.35rem; padding: 0.6rem 0.75rem; font-size: 0.8rem; }
+    [data-theme="brutal"] .current-info { display: grid; grid-template-columns: max-content 1fr; gap: 0.35rem 0.75rem; }
+    [data-theme="brutal"] .info-item { display: contents; }
     .legend { padding: 0.75rem; }
     .legend-item { font-size: 0.75rem; }
     .actions-bar { gap: 0.5rem; padding: 0.75rem; }
