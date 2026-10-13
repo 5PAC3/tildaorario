@@ -491,7 +491,7 @@ footer a:hover { color: var(--accent-color); }
 
 /* Intestazioni colonna: targhe */
 [data-theme="brutal"] th {
-    font-size: 0.62rem;
+    font-size: 0.65rem;
     font-weight: 700;
     letter-spacing: 0.1em;
     color: var(--cal-text);
@@ -503,7 +503,7 @@ footer a:hover { color: var(--accent-color); }
 [data-theme="brutal"] td.empty { opacity: 1; color: var(--cal-border); }
 
 /* Padding di ritmo: stesso per blocchi e celle vuote */
-[data-theme="brutal"] th, [data-theme="brutal"] td { padding: 0.4rem 0.6rem; }
+[data-theme="brutal"] th, [data-theme="brutal"] td { padding: 0.15rem 0.6rem; }
 
 /* Blocco lezione: slab incastonato, solo colore + testo, niente bordi */
 [data-theme="brutal"] td.block {
@@ -742,7 +742,8 @@ footer a:hover { color: var(--accent-color); }
     .day-event { font-size: 0.55rem; padding: 1px 3px; }
     .form-row { grid-template-columns: 1fr; }
     [data-theme="brutal"] .table-wrapper { min-width: 0; }
-    [data-theme="brutal"] th, [data-theme="brutal"] td { padding: 0.25rem 0.35rem; }
+    [data-theme="brutal"] th, [data-theme="brutal"] td { padding: 0.1rem 0.35rem; }
+    [data-theme="brutal"] th { font-size: 0.45rem; }
     [data-theme="brutal"] .subject-cell { font-size: 0.7rem; }
     [data-theme="brutal"] .room-cell { font-size: 0.6rem; }
     [data-theme="brutal"] .actions-bar { gap: 0.5rem; padding: 0.75rem; }
