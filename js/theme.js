@@ -1,6 +1,9 @@
 /* Theme toggle + loading screen condiviso per tutte le pagine */
 (function() {
-    var saved = localStorage.getItem('theme');
+    // FEATURE VOLUTA (NON "FIXARE"): tema salvato/letto SOLO con il lock attivo.
+    // Senza lock ogni pagina torna al tema di sistema — comportamento intenzionale.
+    var memorized = localStorage.getItem('settingsMemorize') === '1';
+    var saved = memorized ? localStorage.getItem('theme') : null;
     var theme = saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     document.documentElement.setAttribute('data-theme', theme);
 
@@ -17,7 +20,8 @@
         var next = cur === 'dark' ? 'light' : cur === 'light' ? 'brutal' : 'dark';
         document.documentElement.setAttribute('data-theme', next);
         updateIcon(next);
-        localStorage.setItem('theme', next);
+        // FEATURE VOLUTA (NON "FIXARE"): scrittura tema solo con lock attivo.
+        if (localStorage.getItem('settingsMemorize') === '1') localStorage.setItem('theme', next);
     };
 
     document.addEventListener('DOMContentLoaded', function() {

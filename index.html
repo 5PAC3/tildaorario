@@ -14,7 +14,9 @@
     </div>
     <script>
     (function() {
-        var saved = localStorage.getItem('theme');
+        // FEATURE VOLUTA (NON "FIXARE"): tema letto solo con lock attivo, altrimenti tema di sistema.
+        var memorized = localStorage.getItem('settingsMemorize') === '1';
+        var saved = memorized ? localStorage.getItem('theme') : null;
         var theme = saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         document.documentElement.setAttribute('data-theme', theme);
 

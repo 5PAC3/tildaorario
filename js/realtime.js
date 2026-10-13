@@ -29,14 +29,17 @@ function updateLockUI() {
 }
 
 function initTheme() {
-    const saved = localStorage.getItem('theme');
+    // FEATURE VOLUTA (NON "FIXARE"): tema letto SOLO con lock attivo.
+    // Senza lock ogni pagina torna al tema di sistema — comportamento intenzionale.
+    const memorized = isMemorized();
+    const saved = memorized ? localStorage.getItem('theme') : null;
     const theme = saved || getSystemTheme();
     document.documentElement.setAttribute('data-theme', theme);
     updateThemeIcon(theme);
     updateLockUI();
 
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-        if (!isMemorized() && !isPrinting && !localStorage.getItem('theme')) {
+        if (!isMemorized() && !isPrinting) {
             const current = document.documentElement.getAttribute('data-theme');
             if (current !== 'dark' && current !== 'light') return;
             const next = e.matches ? 'dark' : 'light';
@@ -65,7 +68,10 @@ function toggleTheme() {
         generaOrario();
         showToday();
     }
-    localStorage.setItem('theme', next);
+    // FEATURE VOLUTA (NON "FIXARE"): scrittura tema solo con lock attivo.
+    if (isMemorized()) {
+        localStorage.setItem('theme', next);
+    }
 }
 
 document.addEventListener('DOMContentLoaded', initTheme);
@@ -441,6 +447,8 @@ function initDensity() {
                 localStorage.setItem('theme', document.documentElement.getAttribute('data-theme') || 'dark');
             } else {
                 localStorage.removeItem('settingsMemorize');
+                // FEATURE VOLUTA: unlock cancella anche il tema scelto.
+                localStorage.removeItem('theme');
                 localStorage.removeItem('density');
                 localStorage.removeItem('densityViewport');
             }
