@@ -250,11 +250,8 @@
 
         .dpad-up { grid-column: 2; grid-row: 1; }
         .dpad-left { grid-column: 1; grid-row: 2; }
-        .dpad-center { grid-column: 2; grid-row: 2; }
         .dpad-right { grid-column: 3; grid-row: 2; }
         .dpad-down { grid-column: 2; grid-row: 2; }
-
-        .dpad .dpad-center { display: none; }
 
         .speed-btn {
             width: 40px;
@@ -266,6 +263,11 @@
             font-size: 1rem;
         }
 
+        /* Cambia layout: utile solo dove la dpad esiste (mobile) */
+        .layout-btn {
+            display: none;
+        }
+
         @media (max-width: 768px) {
             .game-container {
                 flex-direction: column;
@@ -275,6 +277,9 @@
             }
             .dpad {
                 display: grid;
+            }
+            .layout-btn {
+                display: flex;
             }
             .instructions {
                 display: none;
@@ -291,7 +296,6 @@
             }
             .dpad.layout-old .dpad-up { grid-column: 2; grid-row: 1; }
             .dpad.layout-old .dpad-left { grid-column: 1; grid-row: 2; }
-            .dpad.layout-old .dpad-center { grid-column: 2; grid-row: 2; display: flex; }
             .dpad.layout-old .dpad-right { grid-column: 3; grid-row: 2; }
             .dpad.layout-old .dpad-down { grid-column: 2; grid-row: 3; }
         }
@@ -311,15 +315,14 @@
             <button class="btn" id="startBtn" onclick="startGame(false)">Start</button>
             <button class="btn secondary" onclick="resetGame()">Reset</button>
             <button class="btn secondary speed-btn" onclick="showSettings()" title="Velocità"><i class="nf nf-fa-gauge_high"></i></button>
-            <button class="btn secondary speed-btn" onclick="toggleLayout()" title="Cambia layout"><i class="nf nf-fa-th"></i></button>
+            <button class="btn secondary speed-btn layout-btn" onclick="toggleLayout()" title="Cambia layout"><i class="nf nf-fa-th"></i></button>
         </div>
         <p class="instructions">Usa le frecce direzionali, WASD o h/j/k/l (nvim) per muovere il serpente</p>
         <div class="dpad">
-            <button class="dpad-btn dpad-up" oncontextmenu="return false;" ontouchstart="handleDirection('up')" onclick="handleDirection('up')"><i class="nf nf-fa-chevron_up"></i></button>
-            <button class="dpad-btn dpad-left" oncontextmenu="return false;" ontouchstart="handleDirection('left')" onclick="handleDirection('left')"><i class="nf nf-fa-chevron_left"></i></button>
-            <button class="dpad-btn dpad-down" oncontextmenu="return false;" ontouchstart="handleDirection('down')" onclick="handleDirection('down')"><i class="nf nf-fa-chevron_down"></i></button>
-            <button class="dpad-btn dpad-right" oncontextmenu="return false;" ontouchstart="handleDirection('right')" onclick="handleDirection('right')"><i class="nf nf-fa-chevron_right"></i></button>
-            <button class="dpad-btn dpad-center" style="display: none;"></button>
+            <button class="dpad-btn dpad-up" oncontextmenu="return false;" onclick="handleDirection('up')"><i class="nf nf-fa-chevron_up"></i></button>
+            <button class="dpad-btn dpad-left" oncontextmenu="return false;" onclick="handleDirection('left')"><i class="nf nf-fa-chevron_left"></i></button>
+            <button class="dpad-btn dpad-down" oncontextmenu="return false;" onclick="handleDirection('down')"><i class="nf nf-fa-chevron_down"></i></button>
+            <button class="dpad-btn dpad-right" oncontextmenu="return false;" onclick="handleDirection('right')"><i class="nf nf-fa-chevron_right"></i></button>
         </div>
     </div>
     <a href="index.html" class="back-link">← Torna all'orario</a>
@@ -354,30 +357,33 @@
         let food = { x: 10, y: 10 };
         let dx = 0;
         let dy = 0;
+        // Direzione dell'ultimo tick: i cambi direzione si validano contro
+        // questa (non contro dx/dy) così due tasti nello stesso tick non
+        // possono girare il serpente di 180° e finire nel collo.
+        let lastDx = 1;
+        let lastDy = 0;
         let score = 0;
         let gameLoop = null;
         let isRunning = false;
+        let isPaused = false;
         let gameSpeed = 100;
-        let highScore = 0;
+        let highScore = parseInt(localStorage.getItem('snakeHighScore') || '0', 10) || 0;
 
         let settingsTimer = null;
         const scoreEl = document.getElementById('scoreEl');
         const settingsMenu = document.getElementById('settingsMenu');
         const settingsOverlay = document.getElementById('settingsOverlay');
 
-        scoreEl.addEventListener('mousedown', () => {
+        // Pointer events: il lungo-press funziona sia con mouse che touch
+        scoreEl.addEventListener('pointerdown', () => {
             settingsTimer = setTimeout(() => {
                 settingsMenu.classList.add('show');
                 settingsOverlay.classList.add('show');
             }, 400);
         });
 
-        scoreEl.addEventListener('mouseup', () => {
-            clearTimeout(settingsTimer);
-        });
-
-        scoreEl.addEventListener('mouseleave', () => {
-            clearTimeout(settingsTimer);
+        ['pointerup', 'pointercancel', 'pointerleave'].forEach(evt => {
+            scoreEl.addEventListener(evt, () => clearTimeout(settingsTimer));
         });
 
         settingsOverlay.addEventListener('click', () => {
@@ -419,6 +425,8 @@
             score = 0;
             dx = 1;
             dy = 0;
+            lastDx = 1;
+            lastDy = 0;
             currentSpeed = gameSpeed === 0 ? 120 : gameSpeed;
             scoreElement.textContent = score;
             placeFood();
@@ -426,13 +434,14 @@
         }
 
         function placeFood() {
-            food.x = Math.floor(Math.random() * tileCount);
-            food.y = Math.floor(Math.random() * tileCount);
-            snake.forEach(segment => {
-                if (segment.x === food.x && segment.y === food.y) {
-                    placeFood();
-                }
-            });
+            if (snake.length >= tileCount * tileCount) return;
+            let x, y;
+            do {
+                x = Math.floor(Math.random() * tileCount);
+                y = Math.floor(Math.random() * tileCount);
+            } while (snake.some(segment => segment.x === x && segment.y === y));
+            food.x = x;
+            food.y = y;
         }
 
         function draw() {
@@ -459,6 +468,8 @@
         }
 
         function update() {
+            lastDx = dx;
+            lastDy = dy;
             const head = { x: snake[0].x + dx, y: snake[0].y + dy };
 
             if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
@@ -493,10 +504,12 @@
 
         function gameOver() {
             isRunning = false;
+            isPaused = false;
             clearInterval(gameLoop);
             startBtn.textContent = 'Start';
             if (score > highScore) {
                 highScore = score;
+                localStorage.setItem('snakeHighScore', String(highScore));
             }
             ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -513,15 +526,37 @@
 
         function startGame(saveDirection = false) {
             if (isRunning) {
+                // Pausa: ferma il loop, mantiene serpente e punteggio
+                isRunning = false;
+                isPaused = true;
+                clearInterval(gameLoop);
+                startBtn.textContent = 'Riprendi';
                 return;
             }
-            isRunning = true;
+            if (isPaused) {
+                // Riprende dal punto in cui era
+                isRunning = true;
+                isPaused = false;
+                startBtn.textContent = 'Pausa';
+                const interval = gameSpeed === 0 ? currentSpeed : gameSpeed;
+                gameLoop = setInterval(update, interval);
+                return;
+            }
             const savedDx = dx;
             const savedDy = dy;
+            isRunning = true;
             initGame();
             if (saveDirection && (savedDx !== 0 || savedDy !== 0)) {
-                dx = savedDx;
-                dy = savedDy;
+                // Ripristina la direzione solo se non punta nel collo
+                // (alla partenza il corpo è a sinistra della testa)
+                const nx = snake[0].x + savedDx;
+                const ny = snake[0].y + savedDy;
+                if (!snake.some(s => s.x === nx && s.y === ny)) {
+                    dx = savedDx;
+                    dy = savedDy;
+                    lastDx = dx;
+                    lastDy = dy;
+                }
             }
             startBtn.textContent = 'Pausa';
             const interval = gameSpeed === 0 ? currentSpeed : gameSpeed;
@@ -530,30 +565,34 @@
 
         function resetGame() {
             isRunning = false;
+            isPaused = false;
             clearInterval(gameLoop);
             startBtn.textContent = 'Start';
             initGame();
+        }
+
+        function setDirection(dir) {
+            switch (dir) {
+                case 'up':
+                    if (lastDy !== 1) { dx = 0; dy = -1; }
+                    break;
+                case 'down':
+                    if (lastDy !== -1) { dx = 0; dy = 1; }
+                    break;
+                case 'left':
+                    if (lastDx !== 1) { dx = -1; dy = 0; }
+                    break;
+                case 'right':
+                    if (lastDx !== -1) { dx = 1; dy = 0; }
+                    break;
+            }
         }
 
         function handleDirection(dir) {
             if (!isRunning) {
                 startGame(true);
             }
-            
-            switch (dir) {
-                case 'up':
-                    if (dy !== 1) { dx = 0; dy = -1; }
-                    break;
-                case 'down':
-                    if (dy !== -1) { dx = 0; dy = 1; }
-                    break;
-                case 'left':
-                    if (dx !== 1) { dx = -1; dy = 0; }
-                    break;
-                case 'right':
-                    if (dx !== -1) { dx = 1; dy = 0; }
-                    break;
-            }
+            setDirection(dir);
         }
 
         document.addEventListener('keydown', (e) => {
@@ -561,36 +600,15 @@
             const code = e.code;
             const keyCode = e.keyCode;
 
-            const isD = key === 'd' || code === 'KeyD' || keyCode === 68;
+            let dir = null;
+            if (key === 'arrowup' || key === 'k' || key === 'w' || code === 'KeyW' || keyCode === 87) dir = 'up';
+            else if (key === 'arrowdown' || key === 'j' || key === 's' || code === 'KeyS' || keyCode === 83) dir = 'down';
+            else if (key === 'arrowleft' || key === 'h' || key === 'a' || code === 'KeyA' || keyCode === 65) dir = 'left';
+            else if (key === 'arrowright' || key === 'l' || key === 'd' || code === 'KeyD' || keyCode === 68) dir = 'right';
 
-            if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'w', 'a', 's', 'd', 'k', 'j', 'h', 'l'].includes(key) || ['KeyW', 'KeyA', 'KeyS', 'KeyD'].includes(code) || keyCode === 87 || keyCode === 65 || keyCode === 83 || keyCode === 68) {
+            if (dir) {
                 e.preventDefault();
-            }
-
-            const isMoveKey = ['arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'w', 'a', 's', 'd', 'k', 'j', 'h', 'l'].includes(key) || ['KeyW', 'KeyA', 'KeyS', 'KeyD'].includes(code) || keyCode === 87 || keyCode === 65 || keyCode === 83 || keyCode === 68;
-
-            if (!isRunning) {
-                if (isMoveKey) {
-                    if (key === 'arrowup' || key === 'k' || key === 'w' || code === 'KeyW' || keyCode === 87) { dx = 0; dy = -1; }
-                    else if (key === 'arrowdown' || key === 'j' || key === 's' || code === 'KeyS' || keyCode === 83) { dx = 0; dy = 1; }
-                    else if (key === 'arrowleft' || key === 'h' || key === 'a' || code === 'KeyA' || keyCode === 65) { dx = -1; dy = 0; }
-                    else if (key === 'arrowright' || key === 'l' || key === 'd' || isD) { dx = 1; dy = 0; }
-                    startGame(true);
-                }
-                return;
-            }
-
-            if (key === 'arrowup' || key === 'k' || key === 'w' || code === 'KeyW' || keyCode === 87) {
-                if (dy !== 1) { dx = 0; dy = -1; }
-            }
-            else if (key === 'arrowdown' || key === 'j' || key === 's' || code === 'KeyS' || keyCode === 83) {
-                if (dy !== -1) { dx = 0; dy = 1; }
-            }
-            else if (key === 'arrowleft' || key === 'h' || key === 'a' || code === 'KeyA' || keyCode === 65) {
-                if (dx !== 1) { dx = -1; dy = 0; }
-            }
-            else if (key === 'arrowright' || key === 'l' || key === 'd' || isD) {
-                if (dx !== -1) { dx = 1; dy = 0; }
+                handleDirection(dir);
             }
         });
 
