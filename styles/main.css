@@ -486,6 +486,8 @@ footer a:hover { color: var(--accent-color); }
 [data-theme="brutal"] .theme-toggle:hover, [data-theme="brutal"] .lock-toggle:hover { background: var(--cal-text); border-color: var(--cal-text); color: var(--cal-bg); }
 /* Lock bloccato: resta acceso anche senza hover */
 [data-theme="brutal"] .lock-toggle.locked, [data-theme="brutal"] .lock-toggle.locked:hover { background: var(--cal-text-ice); border-color: var(--cal-text-ice); color: var(--brutal-ink); }
+/* Pressione: feedback istantaneo (disattivato -> acceso) */
+[data-theme="brutal"] .theme-toggle:active, [data-theme="brutal"] .lock-toggle:active { background: var(--cal-text-ice); border-color: var(--cal-text-ice); color: var(--brutal-ink); }
 
 [data-theme="brutal"] td, [data-theme="brutal"] th { border-color: var(--cal-border); }
 [data-theme="brutal"] tr.hour-separator td { border-top: 2px solid var(--cal-border-light); }
