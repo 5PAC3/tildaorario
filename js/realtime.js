@@ -618,9 +618,9 @@ function renderDayGrid(body, idx, lessons) {
         for (let s = timeToSlot(l.start); s < timeToSlot(l.end); s++) nowSlots.add(s);
     });
 
-    // dalla prima all'ultima lezione: i buchi in mezzo restano visibili
-    const from = Math.max(0, timeToSlot(lessons[0].start));
-    const to = Math.min(TOTAL_SLOTS - 1, timeToSlot(lessons[lessons.length - 1].end) - 1);
+    // tutta la giornata (08:00–20:00), anche se rimane lunga
+    const from = 0;
+    const to = TOTAL_SLOTS - 1;
 
     const table = document.createElement('table');
     table.className = 'day-table';
