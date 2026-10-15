@@ -13,7 +13,7 @@ App non ufficiale — per gli orari attendibili fa fede il sito del Politecnico 
 - **Motion** — wipe radiale al cambio tema, slide al cambio mese, animazioni dei modali e della ricerca (rispetta `prefers-reduced-motion`)
 - **Link aule** — click su una lezione apre la mappa AUNICA dell'aula
 - **Viste mobile** — su schermi stretti: *giorno* (lista), *giorno tabella* (griglia oraria coi blocchi) e *tabella piena*, con pallini e swipe per cambiare giorno
-- **Impostazioni mobile** — su schermi stretti lock, densità, vista e tema stanno in un menu a comparsa (button slider in alto a destra)
+- **Impostazioni mobile** — su schermi stretti lock, densità, vista e temi stanno in un pannello laterale (button slider in alto a destra), che resta aperto finché non lo si chiude
 - **Esportazione .ics** e stampa
 - **Calendario eventi** — gestione locale + sync Supabase (WIP)
 

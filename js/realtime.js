@@ -627,9 +627,9 @@ function renderDayGrid(body, idx, lessons) {
     // larghezze esplicite: con table-layout:fixed le colonne sono prevedibili
     const colgroup = document.createElement('colgroup');
     const colOra = document.createElement('col');
-    colOra.style.width = '20%';
+    colOra.style.width = '13%';
     const colGiorno = document.createElement('col');
-    colGiorno.style.width = '80%';
+    colGiorno.style.width = '87%';
     colgroup.appendChild(colOra);
     colgroup.appendChild(colGiorno);
     table.appendChild(colgroup);
@@ -813,7 +813,7 @@ function initDayView() {
 /* ------------------------------------------------------------------ */
 
 const LAYOUTS = ['day', 'grid', 'table'];
-const LAYOUT_LABEL = { day: 'giorno', grid: 'giorno tabella', table: 'tabella' };
+const LAYOUT_LABEL = { day: 'Giorno', grid: 'Giorno tabella', table: 'Tabella piena' };
 const LAYOUT_ICON  = { day: 'nf-fa-th_list', grid: 'nf-fa-calendar_day', table: 'nf-fa-table' };
 
 function currentLayout() {
@@ -829,45 +829,54 @@ function savedLayout() {
     return LAYOUTS.indexOf(saved) === -1 ? 'day' : saved;
 }
 
-function nextLayout(pref) {
-    return LAYOUTS[(LAYOUTS.indexOf(pref) + 1) % LAYOUTS.length];
-}
-
 function applyLayout(pref) {
     document.body.classList.toggle('mobile-table', pref === 'table');
     document.body.classList.toggle('mobile-grid', pref === 'grid');
-
-    const btn = document.getElementById('layoutToggle');
-    if (btn) {
-        // il pulsante mostra la vista di destinazione
-        const next = nextLayout(pref);
-        const icon = btn.querySelector('i');
-        if (icon) icon.className = 'nf ' + LAYOUT_ICON[next];
-        const label = 'Vista ' + LAYOUT_LABEL[pref] + ' — clicca per: ' + LAYOUT_LABEL[next];
-        btn.title = label;
-        btn.setAttribute('aria-label', label);
-    }
+    refreshViewOptions();
 
     // la vista "giorno" cambia corpo (lista o tabella oraria) → ridisegna
     if (document.getElementById('dayBody')) renderDayView();
 }
 
-function initLayout() {
-    applyLayout(savedLayout());
-
-    const btn = document.getElementById('layoutToggle');
-    if (!btn) return;
-    btn.addEventListener('click', function () {
-        const next = nextLayout(currentLayout());
-        applyLayout(next);
-        if (isMemorized()) localStorage.setItem(MOBILE_VIEW_KEY, next);
+// Il selettore della vista (nel pannello impostazioni) mostra le 3 opzioni libere
+function refreshViewOptions() {
+    const box = document.getElementById('viewOptions');
+    if (!box) return;
+    const cur = currentLayout();
+    box.querySelectorAll('.view-option').forEach(opt => {
+        opt.setAttribute('aria-checked', opt.dataset.value === cur ? 'true' : 'false');
     });
 }
 
-// Mobile: i controlli dell'header vivono in un menu a comparsa
+function initLayout() {
+    const box = document.getElementById('viewOptions');
+    if (box) {
+        LAYOUTS.forEach(value => {
+            const opt = document.createElement('button');
+            opt.type = 'button';
+            opt.className = 'pick-option view-option';
+            opt.setAttribute('role', 'menuitemradio');
+            opt.dataset.value = value;
+            opt.innerHTML = '<i class="nf ' + LAYOUT_ICON[value] + '" aria-hidden="true"></i>' +
+                            '<span class="pick-option-label">' + LAYOUT_LABEL[value] + '</span>';
+            opt.addEventListener('click', () => {
+                applyLayout(value);
+                if (isMemorized()) localStorage.setItem(MOBILE_VIEW_KEY, value);
+            });
+            box.appendChild(opt);
+        });
+    }
+
+    applyLayout(savedLayout());
+}
+
+// Mobile: i controlli dell'header vivono in un pannello laterale che resta
+// aperto finché non lo si chiude (X, backdrop, Esc).
 function initControlsMenu() {
     const toggle = document.getElementById('controlsToggle');
-    const panel = document.getElementById('headerControls');
+    const panel = document.getElementById('controlsPanel');
+    const closeBtn = document.getElementById('controlsClose');
+    const backdrop = document.getElementById('controlsBackdrop');
     if (!toggle || !panel) return;
 
     const isOpen = () => document.body.classList.contains('controls-open');
@@ -881,25 +890,14 @@ function initControlsMenu() {
         setOpen(!isOpen());
     });
 
-    // click fuori chiude (il menu del tema è in body, quindi va escluso a parte)
-    document.addEventListener('click', (e) => {
-        if (!isOpen()) return;
-        if (panel.contains(e.target) || toggle.contains(e.target)) return;
-        if (e.target.closest && e.target.closest('.theme-menu')) return;
-        setOpen(false);
-    });
+    if (closeBtn) closeBtn.addEventListener('click', () => { setOpen(false); toggle.focus(); });
+    if (backdrop) backdrop.addEventListener('click', () => setOpen(false));
 
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && isOpen()) {
             setOpen(false);
             toggle.focus();
         }
-    });
-
-    // lock e vista danno un riscontro immediato: chiudi il menu per mostrarlo
-    ['settingsMemorize', 'layoutToggle'].forEach((id) => {
-        const el = document.getElementById(id);
-        if (el) el.addEventListener('click', () => setOpen(false));
     });
 }
 

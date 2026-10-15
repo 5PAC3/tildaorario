@@ -35,6 +35,7 @@
 .nf-fa-plus::before { content: "\f067"; }
 .nf-fa-minus::before { content: "\f068"; }
 .nf-fa-sliders::before { content: "\f1de"; }
+.nf-fa-xmark::before { content: "\f00d"; }
 .nf-fa-arrows_rotate::before { content: "\f021"; }
 .nf-fa-arrow_right_to_bracket::before { content: "\f090"; }
 .nf-fa-arrow_right_from_bracket::before { content: "\f08b"; }
@@ -465,10 +466,18 @@ footer a:hover { color: var(--accent-color); }
 .easter-egg { position: fixed; bottom: 8px; right: 12px; font-size: 0.7rem; color: var(--cal-text-muted); opacity: 0.3; text-decoration: none; transition: opacity 0.2s; }
 .easter-egg:hover { opacity: 1; }
 
-/* Mobile: i controlli (lock, densità, vista, tema) stanno in un menu a comparsa.
-   Su desktop il wrapper non esiste visivamente e il bottone è nascosto. */
+/* Pannello impostazioni (lock, densità, vista, tema).
+   Su desktop è "trasparente": i controlli restano in linea nell'header e il
+   bottone/pannello mobile non esistono. Su mobile diventa un pannello laterale. */
 .controls-menu { display: contents; }
 .controls-toggle { display: none; }
+.controls-head,
+.controls-close,
+.controls-backdrop { display: none; }
+.ctrl-row { display: contents; }
+.ctrl-label { display: none; }
+.ctrl-view { display: none; }        /* la vista giorno è solo mobile */
+.pick-list { display: none; }        /* su desktop i temi stanno nel dropdown */
 
 .header-controls { display: flex; align-items: center; gap: 0.75rem; }
 .theme-toggle, .lock-toggle { padding: 0.4rem 0.5rem; font-size: 0.9rem; border: none; border-radius: 6px; cursor: pointer; transition: background 0.2s, color 0.2s; background: transparent; color: var(--cal-text); overflow: visible; }
@@ -498,7 +507,7 @@ footer a:hover { color: var(--accent-color); }
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 .theme-menu[hidden] { display: none; }
-.theme-option {
+.pick-option {
     display: flex;
     align-items: center;
     gap: 0.6rem;
@@ -513,9 +522,9 @@ footer a:hover { color: var(--accent-color); }
     text-align: left;
     cursor: pointer;
 }
-.theme-option:hover, .theme-option:focus-visible { background: color-mix(in srgb, var(--cal-text) 12%, transparent); outline: none; }
-.theme-option[aria-checked="true"] { font-weight: 700; }
-.theme-option[aria-checked="true"]::after { content: "\2713"; margin-left: auto; color: var(--accent-color); }
+.pick-option:hover, .pick-option:focus-visible { background: color-mix(in srgb, var(--cal-text) 12%, transparent); outline: none; }
+.pick-option[aria-checked="true"] { font-weight: 700; }
+.pick-option[aria-checked="true"]::after { content: "\2713"; margin-left: auto; color: var(--accent-color); }
 .theme-swatch {
     flex: 0 0 auto;
     width: 1.1rem;
@@ -529,7 +538,7 @@ footer a:hover { color: var(--accent-color); }
 .theme-swatch::after { content: ''; position: absolute; inset: 0 0 0 50%; background: var(--sw-accent, #ccc); }
 
 [data-theme^="brutal"] .theme-menu { border-radius: 0; border: 2px solid var(--cal-border-strong); box-shadow: none; }
-[data-theme^="brutal"] .theme-option { border-radius: 0; text-transform: uppercase; letter-spacing: 0.04em; font-size: 0.72rem; font-weight: 700; }
+[data-theme^="brutal"] .pick-option { border-radius: 0; text-transform: uppercase; letter-spacing: 0.04em; font-size: 0.72rem; font-weight: 700; }
 [data-theme^="brutal"] .theme-swatch { border-radius: 0; }
 [data-theme="light"] tr:nth-child(odd) td.empty { background: color-mix(in srgb, var(--cal-bg) 85%, #ffffff); }
 [data-theme="light"] tr:nth-child(even) td.empty { background: color-mix(in srgb, var(--cal-bg) 40%, #ffffff); }
@@ -855,33 +864,61 @@ footer a:hover { color: var(--accent-color); }
     /* App bar (home): titolo a sinistra, impostazioni a destra, nav sotto */
     .app-bar { justify-content: space-between; }
     .app-bar h1 { order: 1; }
-    .app-bar .controls-menu { order: 2; }
-    .app-bar .main-nav { order: 3; flex-basis: 100%; justify-content: center; }
-    /* i controlli diventano un menu a comparsa, apribile dal bottone a destra */
-    .controls-menu { display: block; }
+    .app-bar .controls-toggle { order: 2; }
+    .app-bar .main-nav { order: 3; margin-left: auto; margin-right: auto; }
+
+    /* Pannello impostazioni: sezione laterale che scorre da destra */
     .controls-toggle { display: inline-flex; }
-    .header-controls {
-        position: absolute;
-        top: calc(100% + 0.5rem);
-        right: 0;
-        z-index: 2000;
-        display: none;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 0.75rem;
-        min-width: 13.5rem;
-        width: 15rem;
-        max-width: calc(100vw - 1.5rem);
-        padding: 0.75rem 0.9rem;
-        background: var(--cal-header-bg);
-        border: 1px solid var(--cal-border);
-        border-radius: 8px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    .controls-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 2500;
+        background: rgba(0, 0, 0, 0.45);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.22s ease;
     }
-    body.controls-open .header-controls { display: flex; }
-    .header-controls .density-control { order: 5; flex-basis: 100%; }
-    .header-controls .density-control label { flex: 1; }
-    .header-controls .density-control input[type="range"] { width: auto; flex: 1; min-width: 0; }
+    body.controls-open .controls-backdrop { opacity: 1; pointer-events: auto; }
+    .controls-menu {
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100%;
+        width: min(20rem, 85vw);
+        z-index: 2600;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        background: var(--cal-bg);
+        border-left: 1px solid var(--cal-border);
+        box-shadow: -8px 0 30px rgba(0, 0, 0, 0.4);
+        transform: translateX(100%);
+        transition: transform 0.22s ease;
+    }
+    body.controls-open .controls-menu { transform: none; }
+    body.controls-open { overflow: hidden; }
+    .controls-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        padding: 0.9rem 1rem;
+        border-bottom: 1px solid var(--cal-border);
+    }
+    .controls-title { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--cal-text); }
+    .controls-close { display: inline-flex; padding: 0.35rem 0.55rem; }
+
+    .header-controls { display: flex; flex-direction: column; gap: 1.1rem; padding: 1rem; }
+    .ctrl-row { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
+    .ctrl-label { display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--cal-text-muted); }
+    .ctrl-view, .ctrl-theme { display: block; }
+    .ctrl-view .ctrl-label, .ctrl-theme .ctrl-label { margin-bottom: 0.5rem; }
+    .pick-list { display: flex; flex-direction: column; gap: 0.15rem; }
+    .controls-menu .theme-toggle { display: none; }   /* i temi sono in lista */
+    .ctrl-density .density-control { flex: 1; min-width: 0; }
+    .controls-menu .density-control label { flex: 1; }
+    .controls-menu .density-control input[type="range"] { width: auto; flex: 1; min-width: 0; }
     .main-nav { flex-wrap: wrap; gap: 0.25rem; padding: 0.25rem; }
     .main-nav a { padding: 0.4rem 0.6rem; font-size: 0.8rem; }
     .schedule-header { flex-direction: column; gap: 0.75rem; padding: 0.75rem; }

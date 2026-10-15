@@ -20,27 +20,51 @@
                 <a href="index.html" class="active">Orario</a>
                 <a href="calendario.html">Calendario</a>
             </nav>
-            <div class="controls-menu">
-                <button class="btn controls-toggle" id="controlsToggle" type="button" title="Impostazioni" aria-label="Impostazioni" aria-expanded="false" aria-haspopup="true">
-                    <i class="nf nf-fa-sliders"></i>
-                </button>
+            <button class="btn controls-toggle" id="controlsToggle" type="button" title="Impostazioni" aria-label="Impostazioni" aria-expanded="false" aria-controls="controlsPanel">
+                <i class="nf nf-fa-sliders"></i>
+            </button>
+
+            <div class="controls-backdrop" id="controlsBackdrop"></div>
+
+            <div class="controls-menu" id="controlsPanel" role="dialog" aria-label="Impostazioni">
+                <div class="controls-head">
+                    <span class="controls-title">Impostazioni</span>
+                    <button class="btn controls-close" id="controlsClose" type="button" aria-label="Chiudi">
+                        <i class="nf nf-fa-xmark"></i>
+                    </button>
+                </div>
+
                 <div class="header-controls" id="headerControls">
-                    <button class="btn lock-toggle" id="settingsMemorize" title="UI automatica" aria-label="Memorizza impostazioni">
-                        <i class="nf nf-md-lock_open"></i>
-                    </button>
-                    <div class="density-control">
-                        <label for="densitySlider" title="Densità righe">
-                            <i class="nf nf-fa-minus"></i>
-                            <input type="range" id="densitySlider" min="0" max="100" value="50">
-                            <i class="nf nf-fa-plus"></i>
-                        </label>
+                    <div class="ctrl-row ctrl-lock">
+                        <span class="ctrl-label">Memorizza UI</span>
+                        <button class="btn lock-toggle" id="settingsMemorize" title="UI automatica" aria-label="Memorizza impostazioni">
+                            <i class="nf nf-md-lock_open"></i>
+                        </button>
                     </div>
-                    <button class="btn layout-toggle" id="layoutToggle" type="button" title="Vista tabella" aria-label="Vista tabella">
-                        <i class="nf nf-fa-table"></i>
-                    </button>
-                    <button class="btn theme-toggle" id="themeToggle" title="Cambia tema" aria-label="Cambia tema">
-                        <i class="nf nf-fa-circle_half"></i>
-                    </button>
+
+                    <div class="ctrl-row ctrl-density">
+                        <span class="ctrl-label">Densità righe</span>
+                        <div class="density-control">
+                            <label for="densitySlider">
+                                <i class="nf nf-fa-minus"></i>
+                                <input type="range" id="densitySlider" min="0" max="100" value="50">
+                                <i class="nf nf-fa-plus"></i>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="ctrl-row ctrl-view">
+                        <span class="ctrl-label">Vista</span>
+                        <div class="pick-list" id="viewOptions" role="menu" aria-label="Vista"></div>
+                    </div>
+
+                    <div class="ctrl-row ctrl-theme">
+                        <span class="ctrl-label">Tema</span>
+                        <button class="btn theme-toggle" id="themeToggle" title="Cambia tema" aria-label="Cambia tema">
+                            <i class="nf nf-fa-circle_half"></i>
+                        </button>
+                        <div class="pick-list" id="themeList" role="menu" aria-label="Tema"></div>
+                    </div>
                 </div>
             </div>
         </header>

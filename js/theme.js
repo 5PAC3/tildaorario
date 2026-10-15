@@ -55,12 +55,24 @@
     }
 
     function refreshMenu(value) {
-        var menu = document.querySelector('.theme-menu');
-        if (!menu) return;
-        var opts = menu.querySelectorAll('.theme-option');
+        var opts = document.querySelectorAll('.theme-option');
         for (var i = 0; i < opts.length; i++) {
             opts[i].setAttribute('aria-checked', opts[i].getAttribute('data-value') === value ? 'true' : 'false');
         }
+    }
+
+    // Una voce tema (swatch + etichetta). Usata sia dal dropdown desktop sia
+    // dalla lista inline del pannello impostazioni mobile.
+    function themeOption(t, onPick) {
+        var opt = document.createElement('button');
+        opt.type = 'button';
+        opt.className = 'pick-option theme-option';
+        opt.setAttribute('role', 'menuitemradio');
+        opt.setAttribute('data-value', t.value);
+        opt.innerHTML = '<span class="theme-swatch" style="--sw-bg:' + t.bg + ';--sw-accent:' + t.accent + '"></span>'
+                      + '<span class="pick-option-label">' + t.label + '</span>';
+        opt.addEventListener('click', function () { onPick(t.value, opt); });
+        return opt;
     }
 
     function applyTheme(value, originEl) {
@@ -126,19 +138,11 @@
         menu.hidden = true;
 
         THEMES.forEach(function (t) {
-            var opt = document.createElement('button');
-            opt.type = 'button';
-            opt.className = 'theme-option';
-            opt.setAttribute('role', 'menuitemradio');
-            opt.setAttribute('data-value', t.value);
-            opt.innerHTML = '<span class="theme-swatch" style="--sw-bg:' + t.bg + ';--sw-accent:' + t.accent + '"></span>'
-                          + '<span class="theme-option-label">' + t.label + '</span>';
-            opt.addEventListener('click', function () {
+            menu.appendChild(themeOption(t, function (value) {
                 close();                 // nascondi il menu prima dello snapshot del tema
-                applyTheme(t.value, btn); // wipe radiale con origine dal selettore
+                applyTheme(value, btn); // wipe radiale con origine dal selettore
                 btn.focus();
-            });
-            menu.appendChild(opt);
+            }));
         });
 
         document.body.appendChild(menu);
@@ -203,6 +207,18 @@
         });
     }
 
+    // Lista temi inline (pannello impostazioni mobile): niente sottomenu.
+    function buildThemeList(el) {
+        if (el.dataset.themeList === '1') return;
+        el.dataset.themeList = '1';
+        THEMES.forEach(function (t) {
+            el.appendChild(themeOption(t, function (value, opt) {
+                applyTheme(value, opt);
+            }));
+        });
+        refreshMenu(currentTheme());
+    }
+
     function setup() {
         var btn = document.getElementById('themeToggle');
         if (btn) {
@@ -210,6 +226,9 @@
             refreshTrigger(currentTheme());
             refreshMenu(currentTheme());
         }
+
+        var list = document.getElementById('themeList');
+        if (list) buildThemeList(list);
 
         var screen = document.getElementById('loadingScreen');
         if (screen) {
