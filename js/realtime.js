@@ -14,10 +14,6 @@ let isPrinting = false;
 window.addEventListener('beforeprint', () => { isPrinting = true; });
 window.addEventListener('afterprint', () => { isPrinting = false; });
 
-function getSystemTheme() {
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-}
-
 function updateLockUI() {
     const btn = document.getElementById('settingsMemorize');
     if (!btn) return;
@@ -29,50 +25,38 @@ function updateLockUI() {
 }
 
 function initTheme() {
+    // Il tema iniziale è già applicato da js/theme.js (nell'<head>). Qui: fallback
+    // nel caso manchi, UI del lock e aggiornamento live dal tema di sistema.
     // FEATURE VOLUTA (NON "FIXARE"): tema letto SOLO con lock attivo.
-    // Senza lock ogni pagina torna al tema di sistema — comportamento intenzionale.
-    const memorized = isMemorized();
-    const saved = memorized ? localStorage.getItem('theme') : null;
-    const theme = saved || getSystemTheme();
-    document.documentElement.setAttribute('data-theme', theme);
-    updateThemeIcon(theme);
+    if (!document.documentElement.getAttribute('data-theme')) {
+        const memorized = isMemorized();
+        const saved = memorized ? localStorage.getItem('theme') : null;
+        document.documentElement.setAttribute('data-theme', saved || 'brutal');
+    }
     updateLockUI();
 
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
         if (!isMemorized() && !isPrinting) {
             const current = document.documentElement.getAttribute('data-theme');
             if (current !== 'dark' && current !== 'light') return;
-            const next = e.matches ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', next);
-            updateThemeIcon(next);
+            setTheme(e.matches ? 'dark' : 'light');
         }
     });
 }
 
-function updateThemeIcon(theme) {
-    const toggle = document.getElementById('themeToggle');
-    if (!toggle) return;
-    const icon = toggle.querySelector('i');
-    if (icon) {
-        const cls = theme === 'dark' ? 'nf nf-fa-sun' : theme === 'light' ? 'nf nf-fa-moon' : 'nf nf-fa-terminal';
-        icon.className = cls;
-    }
+function setTheme(theme) {
+    if (window.applyTheme) window.applyTheme(theme);
+    else document.documentElement.setAttribute('data-theme', theme);
 }
 
-function toggleTheme() {
-    const current = document.documentElement.getAttribute('data-theme') || 'dark';
-    const next = current === 'dark' ? 'light' : current === 'light' ? 'brutal' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    updateThemeIcon(next);
+// Il cambio tema (dal selettore in js/theme.js) richiede di ridisegnare la
+// griglia: il tema brutal usa rowSpan, quindi la struttura delle celle cambia.
+document.addEventListener('themechange', () => {
     if (document.getElementById('scheduleTable')) {
         generaOrario();
         showToday();
     }
-    // FEATURE VOLUTA (NON "FIXARE"): scrittura tema solo con lock attivo.
-    if (isMemorized()) {
-        localStorage.setItem('theme', next);
-    }
-}
+});
 
 document.addEventListener('DOMContentLoaded', initTheme);
 
@@ -182,7 +166,7 @@ function generaOrario() {
     const tbody = table.querySelector('tbody');
     tbody.innerHTML = '';
 
-    const brutal = document.documentElement.getAttribute('data-theme') === 'brutal';
+    const brutal = (document.documentElement.getAttribute('data-theme') || '').startsWith('brutal');
 
     for (let s = 0; s < TOTAL_SLOTS; s++) {
         const tr = document.createElement('tr');
@@ -652,7 +636,6 @@ function printSchedule() {
     const theme = document.documentElement.getAttribute('data-theme') || 'dark';
     window.print();
     document.documentElement.setAttribute('data-theme', theme);
-    updateThemeIcon(theme);
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -678,11 +661,6 @@ document.addEventListener('DOMContentLoaded', function () {
             window.open(td.dataset.link, '_blank');
         }
     });
-
-    const themeToggle = document.getElementById('themeToggle');
-    if (themeToggle) {
-        themeToggle.addEventListener('click', toggleTheme);
-    }
 
     initDensity();
 });

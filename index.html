@@ -6,35 +6,13 @@
     <title>sartorario</title>
     <link rel="icon" href="favicon.ico">
     <link rel="stylesheet" href="styles/main.css">
+    <script src="js/theme.js"></script>
 </head>
 <body>
     <div class="loading-screen" id="loadingScreen">
         <span class="spinner" id="spinner">\</span>
         <span class="loading-text">// LOADING...</span>
     </div>
-    <script>
-    (function() {
-        // FEATURE VOLUTA (NON "FIXARE"): tema letto solo con lock attivo, altrimenti tema di sistema.
-        var memorized = localStorage.getItem('settingsMemorize') === '1';
-        var saved = memorized ? localStorage.getItem('theme') : null;
-        var theme = saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme', theme);
-
-        var spinner = document.getElementById('spinner');
-        var screen = document.getElementById('loadingScreen');
-        var chars = ['\\', '|', '/', '-'];
-        var i = 0;
-        var start = performance.now();
-        var interval = setInterval(function() { spinner.textContent = chars[i++ % 4]; }, 100);
-        function hide() {
-            clearInterval(interval);
-            var elapsed = performance.now() - start;
-            setTimeout(function() { screen.remove(); }, Math.max(0, 200 - elapsed));
-        }
-        if (document.readyState === 'complete') hide();
-        else window.addEventListener('load', hide);
-    })();
-    </script>
     <div class="container">
         <header>
             <h1>Sigmaorario</h1>
