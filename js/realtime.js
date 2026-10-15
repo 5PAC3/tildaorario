@@ -203,7 +203,7 @@ function generaOrario() {
                 td.innerHTML = `
                     <span class="subject-cell">${cell.subject}</span>
                     <span class="room-cell">${cell.room || ''}</span>
-                    ${cell.link ? '<span class="link-icon" aria-hidden="true">↗</span>' : ''}
+                    ${cell.link ? '<i class="nf nf-fa-external_link link-icon" aria-hidden="true"></i>' : ''}
                 `;
                 if (cell.room) {
                     td.dataset.room = cell.room;
@@ -228,7 +228,7 @@ function generaOrario() {
                     td.innerHTML = `
                         <span class="subject-cell">${cell.subject}</span>
                         <span class="room-cell">${cell.room || ''}</span>
-                        ${cell.link ? '<span class="link-icon" aria-hidden="true">↗</span>' : ''}
+                        ${cell.link ? '<i class="nf nf-fa-external_link link-icon" aria-hidden="true"></i>' : ''}
                     `;
                 } else {
                     td.textContent = '';
@@ -419,8 +419,8 @@ function initDensity() {
         applyDensity(v);
         if (isMemorized()) saveDensity(v);
     };
-    const minIcon = document.querySelector('.density-control .nf-fa-minimize');
-    const maxIcon = document.querySelector('.density-control .nf-fa-maximize');
+    const minIcon = document.querySelector('.density-control .nf-fa-minus');
+    const maxIcon = document.querySelector('.density-control .nf-fa-plus');
     if (minIcon) minIcon.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); setDensity(slider.min); });
     if (maxIcon) maxIcon.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); setDensity(slider.max); });
 
