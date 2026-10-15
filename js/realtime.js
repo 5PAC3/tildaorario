@@ -317,6 +317,12 @@ function aggiornaInfo() {
 
     updateCurrentSlotIndicator(currentSlot);
 
+    // Vista giorno (mobile): si ridisegna solo quando cambia lo slot
+    if (DAY_VIEW.index !== null && currentSlot !== DAY_VIEW.lastSlot) {
+        DAY_VIEW.lastSlot = currentSlot;
+        renderDayView();
+    }
+
     if (idxG === -1) {
         lezEl.textContent = '-';
         const next = findNextLesson(0, 0);
@@ -552,6 +558,126 @@ function resetView() {
     showToday();
 }
 
+/* ------------------------------------------------------------------ */
+/* Vista "giorno" (mobile): una giornata per volta, swipe per cambiare  */
+/* ------------------------------------------------------------------ */
+
+const DAY_VIEW = { index: null, lastSlot: null };
+
+function minutesOf(timeStr) {
+    const [h, m] = timeStr.split(':').map(Number);
+    return h * 60 + m;
+}
+
+function isLessonNow(lesson) {
+    if (DAY_VIEW.index !== getGiornoIndex()) return false;
+    const now = new Date();
+    const mins = now.getHours() * 60 + now.getMinutes();
+    return mins >= minutesOf(lesson.start) && mins < minutesOf(lesson.end);
+}
+
+function renderDayView(dir) {
+    const body = document.getElementById('dayBody');
+    if (!body) return;
+
+    if (DAY_VIEW.index === null) {
+        const today = getGiornoIndex();
+        DAY_VIEW.index = today === -1 ? 0 : today;
+    }
+    const idx = DAY_VIEW.index;
+
+    const title = document.getElementById('dayTitle');
+    if (title) title.textContent = NOME_GIORNI[idx];
+
+    const lessons = (RAW_SCHEDULE[idx] || [])
+        .slice()
+        .sort((a, b) => minutesOf(a.start) - minutesOf(b.start));
+
+    body.innerHTML = '';
+
+    if (!lessons.length) {
+        const empty = document.createElement('div');
+        empty.className = 'day-empty';
+        empty.textContent = 'Nessuna lezione';
+        body.appendChild(empty);
+    } else {
+        lessons.forEach(lesson => {
+            const current = isLessonNow(lesson);
+            const room = lesson.room
+                ? (AUNICA_LINKS[lesson.room]
+                    ? `<a href="${AUNICA_LINKS[lesson.room]}" target="_blank" rel="noopener">${lesson.room}</a>`
+                    : lesson.room)
+                : '';
+            const meta = [room, current ? 'in corso' : ''].filter(Boolean).join(' · ');
+
+            const row = document.createElement('div');
+            row.className = 'day-lesson' + (current ? ' is-current' : '');
+            row.style.setProperty('--subject-color', getSubjectColor(lesson.subject));
+            row.innerHTML =
+                `<div class="dl-time">${lesson.start}<span class="dl-time-end">${lesson.end}</span></div>` +
+                `<div><div class="dl-subject">${lesson.subject}</div>` +
+                (meta ? `<div class="dl-meta">${meta}</div>` : '') +
+                `</div>`;
+            body.appendChild(row);
+        });
+    }
+
+    const dots = document.getElementById('dayDots');
+    if (dots) {
+        dots.innerHTML = '';
+        NOME_GIORNI.forEach((_, i) => {
+            const dot = document.createElement('span');
+            dot.className = 'day-dot' + (i === idx ? ' active' : '');
+            dots.appendChild(dot);
+        });
+    }
+
+    if (dir) {
+        body.classList.remove('from-right', 'from-left');
+        void body.offsetWidth;   // reflow: riavvia l'animazione
+        body.classList.add(dir > 0 ? 'from-right' : 'from-left');
+    }
+}
+
+function gotoDay(delta) {
+    if (DAY_VIEW.index === null) DAY_VIEW.index = 0;
+    const n = NOME_GIORNI.length;
+    DAY_VIEW.index = (DAY_VIEW.index + delta + n) % n;
+    renderDayView(delta);
+}
+
+function initDayView() {
+    const root = document.getElementById('dayView');
+    if (!root) return;
+
+    const prev = document.getElementById('dayPrev');
+    const next = document.getElementById('dayNext');
+    if (prev) prev.onclick = () => gotoDay(-1);
+    if (next) next.onclick = () => gotoDay(1);
+
+    // Swipe orizzontale: verso sinistra = giorno dopo, verso destra = giorno prima
+    let x0 = null;
+    let y0 = null;
+    root.addEventListener('touchstart', (e) => {
+        if (e.touches.length !== 1) return;
+        x0 = e.touches[0].clientX;
+        y0 = e.touches[0].clientY;
+    }, { passive: true });
+    root.addEventListener('touchend', (e) => {
+        if (x0 === null) return;
+        const t = (e.changedTouches && e.changedTouches[0]) || (e.touches && e.touches[0]);
+        if (!t) { x0 = null; return; }
+        const dx = t.clientX - x0;
+        const dy = t.clientY - y0;
+        x0 = null;
+        if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return;
+        gotoDay(dx < 0 ? 1 : -1);
+    }, { passive: true });
+
+    renderDayView();
+    DAY_VIEW.lastSlot = getCurrentSlot();
+}
+
 const SEMESTER_START = new Date(2026, 8, 14);
 const SEMESTER_WEEKS = 20;
 
@@ -639,6 +765,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         await loadSchedule();
         generaOrario();
         showToday();
+        initDayView();
         aggiornaInfo();
         setInterval(aggiornaInfo, 1000);
     }
