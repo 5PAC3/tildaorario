@@ -1025,12 +1025,17 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
     }
 
-    document.getElementById('scheduleTable')?.addEventListener('click', function (e) {
-        const td = e.target.closest('td[data-link]');
-        if (td) {
-            window.open(td.dataset.link, '_blank');
-        }
-    });
+    // Celle con link (aula): in tabella e nella vista giorno il tap/click
+    // apre il link della stanza — stesso handler, contenitori diversi.
+    function initRoomLinks() {
+        const open = (e) => {
+            const td = e.target.closest('td[data-link]');
+            if (td) window.open(td.dataset.link, '_blank');
+        };
+        document.getElementById('scheduleTable')?.addEventListener('click', open);
+        document.getElementById('dayBody')?.addEventListener('click', open);
+    }
+    initRoomLinks();
 
     initDensity();
     initControlsMenu();
