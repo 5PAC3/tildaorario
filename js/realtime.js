@@ -864,6 +864,45 @@ function initLayout() {
     });
 }
 
+// Mobile: i controlli dell'header vivono in un menu a comparsa
+function initControlsMenu() {
+    const toggle = document.getElementById('controlsToggle');
+    const panel = document.getElementById('headerControls');
+    if (!toggle || !panel) return;
+
+    const isOpen = () => document.body.classList.contains('controls-open');
+    const setOpen = (open) => {
+        document.body.classList.toggle('controls-open', open);
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    };
+
+    toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        setOpen(!isOpen());
+    });
+
+    // click fuori chiude (il menu del tema è in body, quindi va escluso a parte)
+    document.addEventListener('click', (e) => {
+        if (!isOpen()) return;
+        if (panel.contains(e.target) || toggle.contains(e.target)) return;
+        if (e.target.closest && e.target.closest('.theme-menu')) return;
+        setOpen(false);
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isOpen()) {
+            setOpen(false);
+            toggle.focus();
+        }
+    });
+
+    // lock e vista danno un riscontro immediato: chiudi il menu per mostrarlo
+    ['settingsMemorize', 'layoutToggle'].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('click', () => setOpen(false));
+    });
+}
+
 const SEMESTER_START = new Date(2026, 8, 14);
 const SEMESTER_WEEKS = 20;
 
@@ -981,4 +1020,5 @@ document.addEventListener('DOMContentLoaded', async function () {
     });
 
     initDensity();
+    initControlsMenu();
 });

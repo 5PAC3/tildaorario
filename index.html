@@ -14,29 +14,34 @@
         <span class="loading-text">// LOADING...</span>
     </div>
     <div class="container">
-        <header>
+        <header class="app-bar">
             <h1>Sigmaorario</h1>
             <nav class="main-nav">
                 <a href="index.html" class="active">Orario</a>
                 <a href="calendario.html">Calendario</a>
             </nav>
-            <div class="header-controls">
-                <button class="btn lock-toggle" id="settingsMemorize" title="UI automatica" aria-label="Memorizza impostazioni">
-                    <i class="nf nf-md-lock_open"></i>
+            <div class="controls-menu">
+                <button class="btn controls-toggle" id="controlsToggle" type="button" title="Impostazioni" aria-label="Impostazioni" aria-expanded="false" aria-haspopup="true">
+                    <i class="nf nf-fa-sliders"></i>
                 </button>
-                <div class="density-control" style="display:flex;align-items:center;gap:0.5rem;">
-                    <label for="densitySlider" title="Densità righe" style="display:flex;align-items:center;gap:0.3rem;color:var(--cal-text-muted);font-size:0.65rem;">
-                        <i class="nf nf-fa-minus"></i>
-                        <input type="range" id="densitySlider" min="0" max="100" value="50" style="width:80px;accent-color:var(--accent-color);">
-                        <i class="nf nf-fa-plus"></i>
-                    </label>
+                <div class="header-controls" id="headerControls">
+                    <button class="btn lock-toggle" id="settingsMemorize" title="UI automatica" aria-label="Memorizza impostazioni">
+                        <i class="nf nf-md-lock_open"></i>
+                    </button>
+                    <div class="density-control">
+                        <label for="densitySlider" title="Densità righe">
+                            <i class="nf nf-fa-minus"></i>
+                            <input type="range" id="densitySlider" min="0" max="100" value="50">
+                            <i class="nf nf-fa-plus"></i>
+                        </label>
+                    </div>
+                    <button class="btn layout-toggle" id="layoutToggle" type="button" title="Vista tabella" aria-label="Vista tabella">
+                        <i class="nf nf-fa-table"></i>
+                    </button>
+                    <button class="btn theme-toggle" id="themeToggle" title="Cambia tema" aria-label="Cambia tema">
+                        <i class="nf nf-fa-circle_half"></i>
+                    </button>
                 </div>
-                <button class="btn layout-toggle" id="layoutToggle" type="button" title="Vista tabella" aria-label="Vista tabella">
-                    <i class="nf nf-fa-table"></i>
-                </button>
-                <button class="btn theme-toggle" id="themeToggle" title="Cambia tema" aria-label="Cambia tema">
-                    <i class="nf nf-fa-circle_half"></i>
-                </button>
             </div>
         </header>
 
