@@ -68,27 +68,19 @@ const AUNICA_LINKS = {
     'T.2.3': 'https://aunicalogin.polimi.it/aunicalogin/getservizio.xml?id_servizio=343&idaula=56&lang=IT',
 };
 
-const RAW_SCHEDULE = {
-    0: [
-        { subject: 'FONDAMENTI DI INFORMATICA', start: '13:15', end: '16:15', room: '2.1.4' },
-        { subject: 'ANALISI MATEMATICA 1', start: '16:15', end: '19:15', room: '2.1.4' },
-    ],
-    1: [],
-    2: [
-        { subject: 'FONDAMENTI DI INFORMATICA', start: '8:15', end: '10:15', room: '20.S.1' },
-        { subject: 'ANALISI MATEMATICA 1', start: '10:15', end: '13:15', room: '20.S.1' },
-        { subject: 'GEOMETRIA E ALGEBRA LINEARE', start: '15:15', end: '17:15', room: 'T.2.3' },
-    ],
-    3: [
-        { subject: 'GEOMETRIA E ALGEBRA LINEARE', start: '8:15', end: '10:15', room: 'T.1.1' },
-        { subject: 'FONDAMENTI DI INFORMATICA', start: '10:15', end: '13:15', room: 'T.1.1' },
-        { subject: 'FONDAMENTI DI INFORMATICA', start: '14:15', end: '18:15', room: 'T.2.1' },
-    ],
-    4: [
-        { subject: 'ANALISI MATEMATICA 1', start: '13:15', end: '15:15', room: 'T.2.3' },
-        { subject: 'GEOMETRIA E ALGEBRA LINEARE', start: '15:15', end: '18:15', room: 'T.2.3' },
-    ],
-};
+// Orario caricato da orario.json (fetch) — modificalo lì, non qui.
+let RAW_SCHEDULE = {};
+
+async function loadSchedule() {
+    try {
+        const res = await fetch('orario.json', { cache: 'no-cache' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        if (data && typeof data === 'object') RAW_SCHEDULE = data;
+    } catch (err) {
+        console.error('Impossibile caricare orario.json:', err);
+    }
+}
 
 const SUBJECT_COLORS = [
     '#6b7f9e', '#7a8a5f', '#a8894f', '#8a7a9e', '#a0705c',
@@ -509,7 +501,9 @@ function showToday() {
     }
 }
 
-function searchMateria() {
+// opts.live = true → ricerca mentre si scrive: niente alert, niente scroll forzato
+function searchMateria(opts) {
+    const live = !!(opts && opts.live);
     const query = document.getElementById('searchMateria').value.trim().toLowerCase();
 
     const isHighlighted = document.querySelector('#scheduleTable td.search-highlight');
@@ -540,9 +534,11 @@ function searchMateria() {
                 cell.classList.add('search-highlight');
             }
         });
-        const firstMatch = document.querySelector('#scheduleTable td.search-highlight');
-        if (firstMatch) firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    } else {
+        if (!live) {
+            const firstMatch = document.querySelector('#scheduleTable td.search-highlight');
+            if (firstMatch) firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    } else if (!live) {
         alert('Nessuna materia trovata');
     }
 }
@@ -638,8 +634,9 @@ function printSchedule() {
     document.documentElement.setAttribute('data-theme', theme);
 }
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
     if (document.getElementById('scheduleTable')) {
+        await loadSchedule();
         generaOrario();
         showToday();
         aggiornaInfo();
@@ -648,10 +645,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const searchInput = document.getElementById('searchMateria');
     if (searchInput) {
+        let searchTimer = null;
         searchInput.addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
+                clearTimeout(searchTimer);
                 searchMateria();
             }
+        });
+        // Ricerca mentre si scrive (debounce): niente alert, niente scroll forzato
+        searchInput.addEventListener('input', function () {
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(function () { searchMateria({ live: true }); }, 200);
         });
     }
 

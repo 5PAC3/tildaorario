@@ -78,7 +78,7 @@
         }
 
         #gameCanvas {
-            background: #000;
+            background: var(--cal-bg);
             border: 2px solid var(--cal-border);
             border-radius: 4px;
             max-width: 100%;
@@ -444,11 +444,24 @@
             food.y = y;
         }
 
+        // Colori presi dal tema attivo (--cal-bg / --accent-color), così la
+        // canvas segue chiaro/scuro e i due brutal.
+        function themeColors() {
+            const cs = getComputedStyle(document.documentElement);
+            return {
+                bg: (cs.getPropertyValue('--cal-bg') || '#000').trim() || '#000',
+                body: (cs.getPropertyValue('--accent-color') || '#44633F').trim() || '#44633F',
+                food: '#f85149'
+            };
+        }
+
         function draw() {
-            ctx.fillStyle = '#000';
+            const c = themeColors();
+
+            ctx.fillStyle = c.bg;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            ctx.fillStyle = '#44633F';
+            ctx.fillStyle = c.body;
             snake.forEach((segment, index) => {
                 ctx.fillRect(
                     segment.x * gridSize,
@@ -458,7 +471,7 @@
                 );
             });
 
-            ctx.fillStyle = '#f85149';
+            ctx.fillStyle = c.food;
             ctx.fillRect(
                 food.x * gridSize,
                 food.y * gridSize,
@@ -466,6 +479,9 @@
                 gridSize - 2
             );
         }
+
+        // Ridisegna quando cambia il tema (il picker emette 'themechange')
+        document.addEventListener('themechange', function () { draw(); });
 
         function update() {
             lastDx = dx;
