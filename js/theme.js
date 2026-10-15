@@ -16,6 +16,10 @@
         return localStorage.getItem('settingsMemorize') === '1';
     }
 
+    function reducedMotion() {
+        return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    }
+
     function themeInfo(value) {
         for (var i = 0; i < THEMES.length; i++) {
             if (THEMES[i].value === value) return THEMES[i];
@@ -59,12 +63,25 @@
 
     function applyTheme(value) {
         if (!themeInfo(value)) value = DEFAULT_THEME;
-        document.documentElement.setAttribute('data-theme', value);
-        // FEATURE VOLUTA (NON "FIXARE"): scrittura tema solo con lock attivo.
-        if (isMemorized()) localStorage.setItem('theme', value);
-        refreshTrigger(value);
-        refreshMenu(value);
-        document.dispatchEvent(new CustomEvent('themechange', { detail: { theme: value } }));
+
+        // Cambio tema + ridisegno dentro il callback: così lo snapshot della View
+        // Transition cattura già il layout finale (es. i rowSpan del tema brutal).
+        var apply = function () {
+            document.documentElement.setAttribute('data-theme', value);
+            // FEATURE VOLUTA (NON "FIXARE"): scrittura tema solo con lock attivo.
+            if (isMemorized()) localStorage.setItem('theme', value);
+            refreshTrigger(value);
+            refreshMenu(value);
+            document.dispatchEvent(new CustomEvent('themechange', { detail: { theme: value } }));
+        };
+
+        // Crossfade tra vecchio e nuovo tema; fallback istantaneo se l'API non c'è
+        // o se l'utente ha chiesto meno movimento.
+        if (document.startViewTransition && !reducedMotion()) {
+            document.startViewTransition(apply);
+        } else {
+            apply();
+        }
     }
     window.applyTheme = applyTheme;
     window.getTheme = currentTheme;
@@ -97,8 +114,8 @@
             opt.innerHTML = '<span class="theme-swatch" style="--sw-bg:' + t.bg + ';--sw-accent:' + t.accent + '"></span>'
                           + '<span class="theme-option-label">' + t.label + '</span>';
             opt.addEventListener('click', function () {
+                close();                 // nascondi il menu prima dello snapshot del tema
                 applyTheme(t.value);
-                close();
                 btn.focus();
             });
             menu.appendChild(opt);
