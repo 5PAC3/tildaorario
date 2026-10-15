@@ -221,15 +221,7 @@
             function hide() {
                 clearInterval(interval);
                 var elapsed = performance.now() - start;
-                setTimeout(function () {
-                    // Uscita in dissolvenza; con "meno movimento" sparisce subito.
-                    if (reducedMotion()) { screen.remove(); return; }
-                    screen.classList.add('is-hiding');
-                    var done = false;
-                    function finish() { if (done) return; done = true; screen.remove(); }
-                    screen.addEventListener('animationend', finish);
-                    setTimeout(finish, 800);
-                }, Math.max(0, 200 - elapsed));
+                setTimeout(function () { screen.remove(); }, Math.max(0, 200 - elapsed));
             }
             if (document.readyState === 'complete') hide();
             else window.addEventListener('load', hide);

@@ -877,18 +877,6 @@ html.vt-radial::view-transition-new(root) { animation: theme-wipe 550ms cubic-be
     to   { clip-path: circle(var(--vt-r, 150vmax) at var(--vt-x, 50%) var(--vt-y, 50%)); }
 }
 
-/* --- Transizione tra pagine (stessa origine): dissolvenza invece del lampo --- */
-@view-transition { navigation: auto; }
-
-/* Il loader non entra nella dissolvenza tra pagine */
-.loading-screen { view-transition-name: site-loader; }
-::view-transition-old(site-loader),
-::view-transition-new(site-loader) { animation: none; opacity: 0; }
-
-/* --- Loading screen: uscita in dissolvenza --- */
-@keyframes loader-out { to { opacity: 0; visibility: hidden; } }
-.loading-screen.is-hiding { animation: loader-out 260ms ease forwards; }
-
 /* --- Menu tema: entrata rapida (scale + fade) --- */
 @keyframes menu-in {
     from { opacity: 0; transform: scale(0.96); }
@@ -932,7 +920,6 @@ td.search-highlight { animation: search-in 260ms ease; }
     .theme-menu { animation: none; }
     .theme-toggle.spinning > i:first-child { animation: none; }
     .modal.show, .modal.show .modal-box { animation: none; }
-    .loading-screen.is-hiding { animation: none; opacity: 0; }
     td.search-highlight { animation: none; }
     ::view-transition-old(root),
     ::view-transition-new(root),
