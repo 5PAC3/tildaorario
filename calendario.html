@@ -525,15 +525,20 @@
             }
         }
 
-        document.getElementById('prevMonth').onclick = () => {
-            currentDate.setMonth(currentDate.getMonth() - 1);
-            renderCalendar();
-        };
+        function changeMonth(delta) {
+            currentDate.setMonth(currentDate.getMonth() + delta);
+            var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (!document.startViewTransition || reduce) { renderCalendar(); return; }
+            var root = document.documentElement;
+            root.classList.add(delta > 0 ? 'vt-month-next' : 'vt-month-prev');
+            document.startViewTransition(renderCalendar).finished.finally(function () {
+                root.classList.remove('vt-month-next', 'vt-month-prev');
+            });
+        }
 
-        document.getElementById('nextMonth').onclick = () => {
-            currentDate.setMonth(currentDate.getMonth() + 1);
-            renderCalendar();
-        };
+        document.getElementById('prevMonth').onclick = () => changeMonth(-1);
+
+        document.getElementById('nextMonth').onclick = () => changeMonth(1);
 
         document.getElementById('todayBtn').onclick = () => {
             currentDate = new Date();
