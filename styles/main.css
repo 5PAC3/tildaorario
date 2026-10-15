@@ -867,6 +867,14 @@ footer a:hover { color: var(--accent-color); }
 ::view-transition-old(root),
 ::view-transition-new(root) { animation-duration: 220ms; animation-timing-function: ease; }
 
+/* Variante radiale: il nuovo tema si espande come un cerchio dal selettore */
+html.vt-radial::view-transition-old(root) { animation: none; }
+html.vt-radial::view-transition-new(root) { animation: theme-wipe 420ms ease-in-out; }
+@keyframes theme-wipe {
+    from { clip-path: circle(0px at var(--vt-x, 50%) var(--vt-y, 50%)); }
+    to   { clip-path: circle(var(--vt-r, 150vmax) at var(--vt-x, 50%) var(--vt-y, 50%)); }
+}
+
 /* Menu tema: entrata rapida (scale + fade) */
 @keyframes menu-in {
     from { opacity: 0; transform: scale(0.96); }
@@ -874,8 +882,13 @@ footer a:hover { color: var(--accent-color); }
 }
 .theme-menu { transform-origin: top right; animation: menu-in 140ms ease; }
 
+/* Selettore tema: l'icona gira quando si apre il menu */
+@keyframes theme-spin { to { transform: rotate(360deg); } }
+.theme-toggle.spinning > i:first-child { display: inline-block; animation: theme-spin 420ms ease; }
+
 @media (prefers-reduced-motion: reduce) {
     .theme-menu { animation: none; }
+    .theme-toggle.spinning > i:first-child { animation: none; }
     ::view-transition-old(root),
     ::view-transition-new(root),
     ::view-transition-group(root) { animation: none !important; }

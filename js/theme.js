@@ -61,7 +61,7 @@
         }
     }
 
-    function applyTheme(value) {
+    function applyTheme(value, originEl) {
         if (!themeInfo(value)) value = DEFAULT_THEME;
 
         // Cambio tema + ridisegno dentro il callback: così lo snapshot della View
@@ -75,12 +75,30 @@
             document.dispatchEvent(new CustomEvent('themechange', { detail: { theme: value } }));
         };
 
-        // Crossfade tra vecchio e nuovo tema; fallback istantaneo se l'API non c'è
-        // o se l'utente ha chiesto meno movimento.
-        if (document.startViewTransition && !reducedMotion()) {
-            document.startViewTransition(apply);
-        } else {
+        // Fallback istantaneo se l'API non c'è o se l'utente ha chiesto meno movimento.
+        if (!document.startViewTransition || reducedMotion()) {
             apply();
+            return;
+        }
+
+        if (originEl) {
+            // Wipe radiale: il cerchio parte dal centro del selettore tema.
+            var root = document.documentElement;
+            var r = originEl.getBoundingClientRect();
+            var x = r.left + r.width / 2;
+            var y = r.top + r.height / 2;
+            var dx = Math.max(x, window.innerWidth - x);
+            var dy = Math.max(y, window.innerHeight - y);
+            root.style.setProperty('--vt-x', x + 'px');
+            root.style.setProperty('--vt-y', y + 'px');
+            root.style.setProperty('--vt-r', Math.ceil(Math.sqrt(dx * dx + dy * dy)) + 'px');
+            root.classList.add('vt-radial');
+            document.startViewTransition(apply).finished.finally(function () {
+                root.classList.remove('vt-radial');
+            });
+        } else {
+            // Crossfade (es. cambio tema di sistema, senza punto d'origine).
+            document.startViewTransition(apply);
         }
     }
     window.applyTheme = applyTheme;
@@ -115,7 +133,7 @@
                           + '<span class="theme-option-label">' + t.label + '</span>';
             opt.addEventListener('click', function () {
                 close();                 // nascondi il menu prima dello snapshot del tema
-                applyTheme(t.value);
+                applyTheme(t.value, btn); // wipe radiale con origine dal selettore
                 btn.focus();
             });
             menu.appendChild(opt);
@@ -143,6 +161,10 @@
 
         function open() {
             refreshMenu(currentTheme());
+            // Riavvia lo spin dell'icona a ogni apertura
+            btn.classList.remove('spinning');
+            void btn.offsetWidth;
+            btn.classList.add('spinning');
             menu.hidden = false;
             isOpen = true;
             btn.setAttribute('aria-expanded', 'true');
@@ -163,6 +185,9 @@
             if (isOpen) close(); else open();
         });
         menu.addEventListener('click', function (e) { e.stopPropagation(); });
+        btn.addEventListener('animationend', function (e) {
+            if (e.animationName === 'theme-spin') btn.classList.remove('spinning');
+        });
         document.addEventListener('click', close);
         window.addEventListener('resize', close);
         window.addEventListener('scroll', close, true);
