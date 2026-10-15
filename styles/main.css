@@ -877,9 +877,8 @@ footer a:hover { color: var(--accent-color); }
         background: rgba(0, 0, 0, 0.45);
         opacity: 0;
         pointer-events: none;
-        transition: opacity 0.22s ease;
     }
-    body.controls-open .controls-backdrop { opacity: 1; pointer-events: auto; }
+    body.controls-open .controls-backdrop { opacity: 1; pointer-events: auto; animation: backdrop-in 160ms ease; }
     .controls-menu {
         position: fixed;
         top: 0;
@@ -890,13 +889,15 @@ footer a:hover { color: var(--accent-color); }
         display: flex;
         flex-direction: column;
         overflow-y: auto;
+        overflow-x: hidden;   /* solo verticale */
         background: var(--cal-bg);
         border-left: 1px solid var(--cal-border);
         box-shadow: -8px 0 30px rgba(0, 0, 0, 0.4);
         transform: translateX(100%);
-        transition: transform 0.22s ease;
     }
-    body.controls-open .controls-menu { transform: none; }
+    body.controls-open .controls-menu { transform: none; animation: drawer-in 160ms ease; }
+    body.controls-closing .controls-menu { animation: drawer-out 150ms ease; }
+    body.controls-closing .controls-backdrop { animation: backdrop-out 150ms ease; }
     body.controls-open { overflow: hidden; }
     .controls-head {
         display: flex;
@@ -1042,10 +1043,17 @@ td.search-highlight { animation: search-in 260ms ease; }
 .day-view-body.from-right { animation: day-in-right 220ms ease; }
 .day-view-body.from-left  { animation: day-in-left 220ms ease; }
 
+/* --- Pannello impostazioni (mobile): scorre da destra, breve --- */
+@keyframes drawer-in  { from { transform: translateX(100%); } }
+@keyframes drawer-out { from { transform: none; } to { transform: translateX(100%); } }
+@keyframes backdrop-in  { from { opacity: 0; } }
+@keyframes backdrop-out { from { opacity: 1; } to { opacity: 0; } }
+
 @media (prefers-reduced-motion: reduce) {
     .theme-menu { animation: none; }
     .theme-toggle.spinning > i:first-child { animation: none; }
     .modal.show, .modal.show .modal-box { animation: none; }
+    .controls-menu, .controls-backdrop { animation: none !important; }
     td.search-highlight { animation: none; }
     .day-view-body.from-right,
     .day-view-body.from-left { animation: none; }

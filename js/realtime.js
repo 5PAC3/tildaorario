@@ -880,7 +880,15 @@ function initControlsMenu() {
     if (!toggle || !panel) return;
 
     const isOpen = () => document.body.classList.contains('controls-open');
+    let closing = null;
     const setOpen = (open) => {
+        clearTimeout(closing);
+        document.body.classList.remove('controls-closing');
+        if (!open && isOpen()) {
+            // animazione di uscita prima di nascondere il pannello
+            document.body.classList.add('controls-closing');
+            closing = setTimeout(() => document.body.classList.remove('controls-closing'), 160);
+        }
         document.body.classList.toggle('controls-open', open);
         toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     };
