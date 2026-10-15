@@ -724,13 +724,15 @@ function renderDayView(dir) {
 
     body.innerHTML = '';
 
-    if (!lessons.length) {
+    // La vista "griglia" mostra sempre la giornata completa: anche un giorno
+    // libero (es. martedì) rende la tabella vuota con tutte le celle "-".
+    if (currentLayout() === 'grid') {
+        renderDayGrid(body, idx, lessons);
+    } else if (!lessons.length) {
         const empty = document.createElement('div');
         empty.className = 'day-empty';
         empty.textContent = 'Nessuna lezione';
         body.appendChild(empty);
-    } else if (currentLayout() === 'grid') {
-        renderDayGrid(body, idx, lessons);
     } else {
         renderDayList(body, lessons);
     }
