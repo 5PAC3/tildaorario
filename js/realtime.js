@@ -66,26 +66,31 @@ document.addEventListener('themechange', () => {
 
 document.addEventListener('DOMContentLoaded', initTheme);
 
-const AUNICA_LINKS = {
-    '2.1.4': 'https://aunicalogin.polimi.it/aunicalogin/getservizio.xml?id_servizio=343&idaula=39&lang=IT',
-    '20.S.1': 'https://aunicalogin.polimi.it/aunicalogin/getservizio.xml?id_servizio=343&idaula=282&lang=IT',
-    'T.1.1': 'https://aunicalogin.polimi.it/aunicalogin/getservizio.xml?id_servizio=343&idaula=53&lang=IT',
-    'T.2.1': 'https://aunicalogin.polimi.it/aunicalogin/getservizio.xml?id_servizio=343&idaula=54&lang=IT',
-    'T.2.3': 'https://aunicalogin.polimi.it/aunicalogin/getservizio.xml?id_servizio=343&idaula=56&lang=IT',
-};
-
-// Orario caricato da orario.json (fetch) — modificalo lì, non qui.
+// Dati caricati via fetch — modificali nei JSON, non qui:
+//   orario.json  lezioni per giorno (chiavi 0–4 = lun–ven)
+//   aule.json    stanza -> link dell'aula (es. accesso AUNICA)
 let RAW_SCHEDULE = {};
+let ROOM_LINKS = {};
 
-async function loadSchedule() {
+async function loadJSON(url, fallback) {
     try {
-        const res = await fetch('orario.json', { cache: 'no-cache' });
+        const res = await fetch(url, { cache: 'no-cache' });
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const data = await res.json();
-        if (data && typeof data === 'object') RAW_SCHEDULE = data;
+        return (data && typeof data === 'object') ? data : fallback;
     } catch (err) {
-        console.error('Impossibile caricare orario.json:', err);
+        console.error('Impossibile caricare ' + url + ':', err);
+        return fallback;
     }
+}
+
+// Caricamento in parallelo: ogni file è indipendente, se manca aule.json
+// si perde solo il link dell'aula e l'orario resta pieno.
+function loadData() {
+    return Promise.all([
+        loadJSON('orario.json', {}).then(data => { RAW_SCHEDULE = data; }),
+        loadJSON('aule.json', {}).then(data => { ROOM_LINKS = data; }),
+    ]);
 }
 
 const SUBJECT_COLORS = [
@@ -144,7 +149,7 @@ function buildGrid() {
                 grid[s][day] = {
                     subject: lesson.subject,
                     room: lesson.room,
-                    link: AUNICA_LINKS[lesson.room] || null,
+                    link: ROOM_LINKS[lesson.room] || null,
                     isFirst: s === startSlot,
                     isLast: s === endSlot - 1,
                     isOnly: duration === 1,
@@ -286,7 +291,7 @@ function getLessonEndSlot(day, slot) {
 }
 
 function roomLink(room) {
-    const href = AUNICA_LINKS[room];
+    const href = ROOM_LINKS[room];
     return href ? `<a href="${href}" target="_blank" rel="noopener">${room}</a>` : room;
 }
 
@@ -589,8 +594,8 @@ function renderDayList(body, lessons) {
     lessons.forEach(lesson => {
         const current = isLessonNow(lesson);
         const room = lesson.room
-            ? (AUNICA_LINKS[lesson.room]
-                ? `<a href="${AUNICA_LINKS[lesson.room]}" target="_blank" rel="noopener">${lesson.room}</a>`
+            ? (ROOM_LINKS[lesson.room]
+                ? `<a href="${ROOM_LINKS[lesson.room]}" target="_blank" rel="noopener">${lesson.room}</a>`
                 : lesson.room)
             : '';
         const meta = [room, current ? 'in corso' : ''].filter(Boolean).join(' · ');
@@ -995,7 +1000,7 @@ function printSchedule() {
 
 document.addEventListener('DOMContentLoaded', async function () {
     if (document.getElementById('scheduleTable')) {
-        await loadSchedule();
+        await loadData();
         generaOrario();
         showToday();
         initDayView();

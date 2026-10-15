@@ -55,6 +55,18 @@ L'orario sta in **`orario.json`** (chiavi `0`–`4` = lunedì–venerdì):
 Viene caricato via `fetch` da `js/realtime.js`. Per aggiornarlo basta modificare il JSON:
 niente da toccare nel codice.
 
+I link delle aule (es. accesso AUNICA) stanno invece in **`aule.json`**, mappa
+stanza → link, caricato nello stesso momento:
+
+```json
+{
+  "T.1.1": "https://aunicalogin.polimi.it/aunicalogin/getservizio.xml?id_servizio=343&idaula=53&lang=IT"
+}
+```
+
+Per aggiungere un'aula basta quindi aggiungere la riga in `orario.json` e, se ha un
+link, la corrispondenza in `aule.json`.
+
 ## Note sul deploy
 
 `main` è collegato a Netlify (ogni push = deploy in produzione). Il lavoro va fatto sui

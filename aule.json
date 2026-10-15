@@ -1,0 +1,7 @@
+{
+    "2.1.4": "https://aunicalogin.polimi.it/aunicalogin/getservizio.xml?id_servizio=343&idaula=39&lang=IT",
+    "20.S.1": "https://aunicalogin.polimi.it/aunicalogin/getservizio.xml?id_servizio=343&idaula=282&lang=IT",
+    "T.1.1": "https://aunicalogin.polimi.it/aunicalogin/getservizio.xml?id_servizio=343&idaula=53&lang=IT",
+    "T.2.1": "https://aunicalogin.polimi.it/aunicalogin/getservizio.xml?id_servizio=343&idaula=54&lang=IT",
+    "T.2.3": "https://aunicalogin.polimi.it/aunicalogin/getservizio.xml?id_servizio=343&idaula=56&lang=IT"
+}
