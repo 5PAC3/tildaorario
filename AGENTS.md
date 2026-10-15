@@ -22,6 +22,14 @@ Se l'utente dice genericamente "sistema X" o "aggiungi Y": fai i commit sul
 **branch corrente** e fermati. Per qualsiasi azione che possa toccare `main`
 o la produzione, **chiedi prima** e attendi un consenso esplicito.
 
+## Commit
+
+- ✅ Sui branch **diversi da `main`** (es. `dev`, `theme/*`, `feat/*`):
+  **committa liberamente**, senza chiedere. È il comportamento atteso.
+- ❌ Su `main`: **mai committare** (vale la stessa regola ferrea del push),
+  a meno che l'utente non lo scriva esplicitamente in quel preciso momento.
+- Nel dubbio, agisci (committa sul branch corrente): sarà l'utente a dirti di no.
+
 ## Contesto branch
 
 - `main` → **produzione** (Netlify). Non toccare (vedi sopra).
