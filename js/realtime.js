@@ -629,12 +629,14 @@ function renderDayGrid(body, idx, lessons) {
 
     const table = document.createElement('table');
     table.className = 'day-table';
-    // larghezze esplicite: con table-layout:fixed le colonne sono prevedibili
+    // larghezze esplicite: con table-layout:fixed le colonne sono prevedibili.
+    // Sono in main.css (con override per gli schermi stretti, dove la colonna
+    // ore deve allargarsi per non troncare "08:00" in "08:...").
     const colgroup = document.createElement('colgroup');
     const colOra = document.createElement('col');
-    colOra.style.width = '13%';
+    colOra.className = 'col-ora';
     const colGiorno = document.createElement('col');
-    colGiorno.style.width = '87%';
+    colGiorno.className = 'col-giorno';
     colgroup.appendChild(colOra);
     colgroup.appendChild(colGiorno);
     table.appendChild(colgroup);

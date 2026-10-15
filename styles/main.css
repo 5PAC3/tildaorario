@@ -201,6 +201,14 @@ header h1 { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.02em; margin
 
 /* Vista "giorno tabella": la giornata come griglia oraria, coi blocchi delle lezioni */
 .day-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.day-table .col-ora { width: 13%; }
+.day-table .col-giorno { width: 87%; }
+/* Schermi stretti: la colonna ore deve bastare per "08:00" altrimenti viene
+   troncata in "08:..." (table-layout:fixed non tiene conto del contenuto). */
+@media (max-width: 400px) {
+    .day-table .col-ora { width: 17%; }
+    .day-table .col-giorno { width: 83%; }
+}
 .day-table td.subject-cell { white-space: normal; overflow-wrap: break-word; }
 .day-table .room-cell { display: block; margin-top: 2px; font-size: 0.75rem; color: var(--cal-text-muted); }
 .day-table td.block { text-align: left; }
