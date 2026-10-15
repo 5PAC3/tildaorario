@@ -4,6 +4,10 @@ const SLOT_MINUTES = 15;
 const SLOTS_PER_HOUR = 60 / SLOT_MINUTES;
 const TOTAL_SLOTS = (DAY_END - DAY_START) * SLOTS_PER_HOUR;
 const NOME_GIORNI = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì'];
+const GIORNI_BREVI = ['LUN', 'MAR', 'MER', 'GIO', 'VEN'];
+
+// Preferenza vista mobile: 'day' (default) o 'table'. Salvata solo col lock attivo.
+const MOBILE_VIEW_KEY = 'mobileView';
 
 function isMemorized() {
     return localStorage.getItem('settingsMemorize') === '1';
@@ -427,12 +431,14 @@ function initDensity() {
                 localStorage.setItem('settingsMemorize', '1');
                 saveDensity(slider.value);
                 localStorage.setItem('theme', document.documentElement.getAttribute('data-theme') || 'dark');
+                localStorage.setItem(MOBILE_VIEW_KEY, currentLayout());
             } else {
                 localStorage.removeItem('settingsMemorize');
                 // FEATURE VOLUTA: unlock cancella anche il tema scelto.
                 localStorage.removeItem('theme');
                 localStorage.removeItem('density');
                 localStorage.removeItem('densityViewport');
+                localStorage.removeItem(MOBILE_VIEW_KEY);
             }
             updateLockUI();
         });
@@ -625,9 +631,15 @@ function renderDayView(dir) {
     const dots = document.getElementById('dayDots');
     if (dots) {
         dots.innerHTML = '';
-        NOME_GIORNI.forEach((_, i) => {
-            const dot = document.createElement('span');
+        NOME_GIORNI.forEach((nome, i) => {
+            const dot = document.createElement('button');
+            dot.type = 'button';
             dot.className = 'day-dot' + (i === idx ? ' active' : '');
+            dot.setAttribute('aria-label', nome);
+            if (i === idx) dot.setAttribute('aria-current', 'true');
+            dot.innerHTML = '<span class="day-dot-mark"></span>' +
+                            '<span class="day-dot-label">' + GIORNI_BREVI[i] + '</span>';
+            dot.addEventListener('click', () => gotoDayIndex(i));
             dots.appendChild(dot);
         });
     }
@@ -644,6 +656,16 @@ function gotoDay(delta) {
     const n = NOME_GIORNI.length;
     DAY_VIEW.index = (DAY_VIEW.index + delta + n) % n;
     renderDayView(delta);
+}
+
+// Vai a un giorno preciso scegliendo la direzione più breve per l'animazione
+function gotoDayIndex(index) {
+    const n = NOME_GIORNI.length;
+    const from = DAY_VIEW.index === null ? 0 : DAY_VIEW.index;
+    if (index === from) return;
+    const forward = (index - from + n) % n;
+    DAY_VIEW.index = index;
+    renderDayView(forward <= n / 2 ? 1 : -1);
 }
 
 function initDayView() {
@@ -676,6 +698,46 @@ function initDayView() {
 
     renderDayView();
     DAY_VIEW.lastSlot = getCurrentSlot();
+}
+
+/* ------------------------------------------------------------------ */
+/* Vista mobile: giorno (default) oppure tabella piena, col lock        */
+/* ------------------------------------------------------------------ */
+
+function currentLayout() {
+    return document.body.classList.contains('mobile-table') ? 'table' : 'day';
+}
+
+function savedLayout() {
+    // FEATURE VOLUTA (come tema e densità): letto/salvato solo col lock attivo.
+    if (!isMemorized()) return 'day';
+    return localStorage.getItem(MOBILE_VIEW_KEY) === 'table' ? 'table' : 'day';
+}
+
+function applyLayout(pref) {
+    document.body.classList.toggle('mobile-table', pref === 'table');
+
+    const btn = document.getElementById('layoutToggle');
+    if (!btn) return;
+
+    const toTable = pref !== 'table';   // il pulsante mostra la vista di destinazione
+    const icon = btn.querySelector('i');
+    if (icon) icon.className = 'nf ' + (toTable ? 'nf-fa-table' : 'nf-fa-th_list');
+    const label = toTable ? 'Vista tabella' : 'Vista giorno';
+    btn.title = label;
+    btn.setAttribute('aria-label', label);
+}
+
+function initLayout() {
+    applyLayout(savedLayout());
+
+    const btn = document.getElementById('layoutToggle');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+        const next = currentLayout() === 'table' ? 'day' : 'table';
+        applyLayout(next);
+        if (isMemorized()) localStorage.setItem(MOBILE_VIEW_KEY, next);
+    });
 }
 
 const SEMESTER_START = new Date(2026, 8, 14);
@@ -766,6 +828,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         generaOrario();
         showToday();
         initDayView();
+        initLayout();
         aggiornaInfo();
         setInterval(aggiornaInfo, 1000);
     }

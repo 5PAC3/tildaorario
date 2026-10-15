@@ -46,6 +46,8 @@
 .nf-fa-arrow_left::before { content: "\f060"; }
 .nf-fa-gauge_high::before { content: "\ed2f"; }
 .nf-fa-th::before { content: "\f00a"; }
+.nf-fa-table::before { content: "\f0ce"; }
+.nf-fa-th_list::before { content: "\f00b"; }
 .nf-fa-clipboard_check::before { content: "\ed7a"; }
 .nf-fa-pencil::before { content: "\f040"; }
 .nf-fa-folder::before { content: "\f07b"; }
@@ -179,6 +181,7 @@ header h1 { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.02em; margin
 
 /* Vista "giorno" (mobile): una sola giornata in un box, swipe per cambiare.
    Nascosta su desktop; il breakpoint mobile la attiva e nasconde la tabella. */
+.layout-toggle { display: none; }
 .day-view { display: none; padding: 0.75rem; }
 .day-view-nav { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.6rem; }
 .day-view-title { font-size: 0.95rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--cal-text); }
@@ -194,9 +197,13 @@ header h1 { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.02em; margin
 .day-lesson .dl-meta a { color: var(--cal-orange); text-decoration: none; }
 .day-lesson.is-current .dl-meta { color: var(--accent-color); }
 .day-empty { padding: 2.5rem 0.5rem; text-align: center; color: var(--cal-text-muted); font-size: 0.8rem; }
-.day-view-dots { display: flex; gap: 0.4rem; justify-content: center; margin-top: 0.8rem; }
-.day-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--cal-border); }
-.day-dot.active { background: var(--accent-color); transform: scale(1.2); }
+.day-view-dots { display: flex; gap: 0.3rem; justify-content: center; align-items: flex-start; margin-top: 0.8rem; }
+.day-dot { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; width: 2.1rem; padding: 0.15rem 0; background: none; border: none; cursor: pointer; color: var(--cal-text-muted); opacity: 0.45; }
+.day-dot:hover { opacity: 0.8; }
+.day-dot-mark { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.day-dot-label { font-size: 0.5rem; font-weight: 700; letter-spacing: 0.06em; line-height: 1; }
+.day-dot.active { opacity: 1; color: var(--accent-color); }
+.day-dot.active .day-dot-mark { transform: scale(1.25); }
 table { width: 100%; border-collapse: collapse; table-layout: fixed; }
 th, td { padding: 0.15rem 0.3rem; text-align: center; border: 1px solid var(--cal-border); vertical-align: middle; overflow: hidden; }
 th { background: var(--cal-bg); font-size: 0.65rem; font-weight: 600; color: var(--cal-text-muted); text-transform: uppercase; letter-spacing: 0.05em; position: sticky; top: 0; z-index: 2; transition: all 0.2s; }
@@ -552,7 +559,7 @@ footer a:hover { color: var(--accent-color); }
 /* Vista giorno: angoli netti nel tema brutal */
 [data-theme^="brutal"] .day-lesson { border-radius: 0; border-width: 2px; border-left-width: 2px; }
 [data-theme^="brutal"] .day-nav-btn { border-radius: 0; border-width: 2px; }
-[data-theme^="brutal"] .day-dot { border-radius: 0; }
+[data-theme^="brutal"] .day-dot-mark { border-radius: 0; }
 
 [data-theme^="brutal"] .actions-bar {
     border-radius: 0;
@@ -822,10 +829,17 @@ footer a:hover { color: var(--accent-color); }
 @media (max-width: 768px) {
     .container { padding: 0.75rem; }
 
-    /* Mobile: niente tabella che scorre, una sola giornata in un box */
+    /* Mobile: di default una sola giornata in un box (vista giorno) */
+    .layout-toggle { display: inline-flex; }
     .table-wrapper { display: none; }
     .day-view { display: block; }
     .legend, .actions-bar { display: none; }
+
+    /* Opzione (salvata col lock): torna alla tabella piena */
+    body.mobile-table .table-wrapper { display: block; }
+    body.mobile-table .day-view { display: none; }
+    body.mobile-table .legend { display: flex; }
+    body.mobile-table .actions-bar { display: flex; }
     header { margin-bottom: 1rem; padding-bottom: 1rem; justify-content: center; gap: 0.6rem; }
     header h1 { font-size: 1.25rem; }
     .header-controls { flex-basis: 100%; justify-content: center; }
