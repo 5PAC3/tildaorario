@@ -104,11 +104,11 @@ const SUBJECT_COLORS = [
     '#7d8a72', '#6e7a85', '#9c7380', '#5f8a85', '#a3906e',
 ];
 
-// Palette per i temi rosa: mauve, prugna e rosa profondo (petalo/berry),
-// adulto e non candy. Scelta per materia come quella base.
+// Palette per i temi rosa: toni piu' accesi (roseo, fucsia, corallo,
+// viola) ma sempre adulti, non candy. Scelta per materia come la base.
 const SUBJECT_COLORS_ROSA = [
-    '#b8436b', '#96618d', '#a85f7a', '#7f6398', '#c06b8a',
-    '#8f6480', '#a5637e', '#6f6486', '#b5708b', '#916879',
+    '#e0447c', '#a855c7', '#e05a76', '#8b5cf0', '#f06292',
+    '#d94f8f', '#c056a8', '#7c6ff0', '#ec6a9c', '#b3559e',
 ];
 
 let subjectColorMap = {};
