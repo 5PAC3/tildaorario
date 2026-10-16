@@ -527,11 +527,9 @@ footer a:hover { color: var(--accent-color); }
 .lock-toggle.locked { background: color-mix(in srgb, var(--accent-color) 15%, transparent); color: var(--accent-color); }
 .theme-toggle { min-width: 2.2rem; min-height: 2.2rem; display: inline-flex; align-items: center; justify-content: center; }
 .lock-toggle { min-width: 2.2rem; min-height: 2.2rem; display: inline-flex; align-items: center; justify-content: center; }
-[data-theme="light"] .theme-toggle, [data-theme="light"] .lock-toggle,
-[data-theme="rosa"] .theme-toggle, [data-theme="rosa"] .lock-toggle { background: transparent; color: var(--cal-text); }
-[data-theme="light"] .theme-toggle:hover, [data-theme="light"] .lock-toggle:hover,
-[data-theme="rosa"] .theme-toggle:hover, [data-theme="rosa"] .lock-toggle:hover { background: rgba(0,0,0,0.05); }
-[data-theme="light"] .lock-toggle.locked, [data-theme="rosa"] .lock-toggle.locked { background: color-mix(in srgb, var(--accent-color) 10%, transparent); color: var(--accent-color); }
+[data-theme="light"] .theme-toggle, [data-theme="light"] .lock-toggle { background: transparent; color: var(--cal-text); }
+[data-theme="light"] .theme-toggle:hover, [data-theme="light"] .lock-toggle:hover { background: rgba(0,0,0,0.05); }
+[data-theme="light"] .lock-toggle.locked { background: color-mix(in srgb, var(--accent-color) 10%, transparent); color: var(--accent-color); }
 
 /* Selettore tema: bottone + menu dropdown (costruito da js/theme.js) */
 .theme-toggle { gap: 0.15rem; }
@@ -845,8 +843,146 @@ footer a:hover { color: var(--accent-color); }
 [data-theme^="brutal"] .error { border-radius: 0; }
 [data-theme^="brutal"] .login-spinner { border-radius: 0; border-color: var(--cal-border-light); border-top-color: var(--cal-text-ice); }
 
+/* ------------------------------------------------------------------ */
+/* Tema rosa — soft girl / kawaii: tutto morbido, pill, cuoricini      */
+/* (l'accento è sempre var(--accent-color), quindi adattato anche al  */
+/*  rosa scuro; i colori restano desaturati, mai shocking pink)        */
+
+/* Transizioni morbide con lieve "gomma" (overshoot) */
+[data-theme^="rosa"] .btn,
+[data-theme^="rosa"] .main-nav a,
+[data-theme^="rosa"] .theme-toggle,
+[data-theme^="rosa"] .lock-toggle,
+[data-theme^="rosa"] .day-nav-btn,
+[data-theme^="rosa"] .day-lesson { transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+/* Titolo e valori con cuoricino al posto del prefisso brutal ("// ", "> ") */
+[data-theme^="rosa"] header h1::before { content: '♡ '; color: var(--accent-color); }
+[data-theme^="rosa"] .current-info .value::before { content: '♡ '; color: var(--accent-color); }
+[data-theme^="rosa"] .footer-line::before { content: '♡ '; color: var(--accent-color); }
+[data-theme^="rosa"] .footer-sep { color: var(--accent-color); }
+
+/* Nav a pillola */
+[data-theme^="rosa"] .main-nav { border-radius: 999px; padding: 0.3rem; border: 1px solid color-mix(in srgb, var(--accent-color) 22%, var(--cal-border)); }
+[data-theme^="rosa"] .main-nav a { border-radius: 999px; }
+[data-theme^="rosa"] .main-nav a.active { background: var(--accent-color); color: #fff; box-shadow: 0 2px 8px color-mix(in srgb, var(--accent-color) 45%, transparent); }
+
+/* Card morbide con ombra rosa (current-info, tabella, azioni) */
+[data-theme^="rosa"] .current-info,
+[data-theme^="rosa"] .schedule-container,
+[data-theme^="rosa"] .actions-bar {
+    border: 1px solid color-mix(in srgb, var(--accent-color) 20%, var(--cal-border));
+    border-radius: 18px;
+    box-shadow: 0 4px 16px color-mix(in srgb, var(--accent-color) 12%, transparent);
+}
+[data-theme^="rosa"] .schedule-header { border-bottom: 2px dotted color-mix(in srgb, var(--accent-color) 40%, transparent); }
+[data-theme^="rosa"] .schedule-header h2 { color: var(--accent-color); }
+
+/* Bottoni a pillola, primario pieno */
+[data-theme^="rosa"] .btn {
+    border-radius: 999px;
+    border: 1.5px solid color-mix(in srgb, var(--accent-color) 55%, transparent);
+    background: color-mix(in srgb, var(--accent-color) 8%, transparent);
+}
+[data-theme^="rosa"] .btn:hover {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    color: #fff;
+    box-shadow: 0 3px 12px color-mix(in srgb, var(--accent-color) 40%, transparent);
+}
+[data-theme^="rosa"] .btn-primary { background: var(--accent-color); border-color: var(--accent-color); color: #fff; }
+[data-theme^="rosa"] .btn-primary:hover { background: color-mix(in srgb, var(--accent-color) 82%, #fff); }
+
+/* Toggle tema/lock: cerchietti pieni */
+[data-theme^="rosa"] .theme-toggle,
+[data-theme^="rosa"] .lock-toggle { border-radius: 50%; background: color-mix(in srgb, var(--accent-color) 12%, transparent); color: var(--accent-color); }
+[data-theme^="rosa"] .theme-toggle:hover,
+[data-theme^="rosa"] .lock-toggle:hover { background: var(--accent-color); color: #fff; transform: scale(1.1); }
+[data-theme^="rosa"] .lock-toggle.locked,
+[data-theme^="rosa"] .lock-toggle.locked:hover { background: var(--accent-color); color: #fff; }
+
+/* Intestazioni tabella: maiuscoletto rosa */
+[data-theme^="rosa"] th {
+    color: var(--accent-color);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-bottom: 2px solid color-mix(in srgb, var(--accent-color) 35%, transparent);
+}
+[data-theme^="rosa"] th.today-highlight { background: var(--accent-color); color: #fff; box-shadow: none; }
+
+/* Blocco lezione: schedina arrotondata con bordo pastello */
+[data-theme^="rosa"] td.block { border: 1.5px solid color-mix(in srgb, var(--subject-color) 50%, transparent); background: color-mix(in srgb, var(--subject-color) 14%, var(--cal-bg)); }
+[data-theme^="rosa"] td.block-start { border-radius: 12px 12px 0 0; }
+[data-theme^="rosa"] td.block-end { border-radius: 0 0 12px 12px; }
+[data-theme^="rosa"] td.block-start.block-end { border-radius: 12px; }
+[data-theme^="rosa"] td.block-middle { border-left: 1.5px solid color-mix(in srgb, var(--subject-color) 50%, transparent); border-right: 1.5px solid color-mix(in srgb, var(--subject-color) 50%, transparent); }
+[data-theme^="rosa"] .subject-cell::before { content: '♡ '; color: var(--subject-color); font-size: 0.75em; }
+[data-theme^="rosa"] td[data-link]:hover { background: color-mix(in srgb, var(--subject-color) 26%, var(--cal-bg)); }
+
+/* Lezione in corso: alone rosa che respira */
+[data-theme^="rosa"] td.current-cell {
+    outline: 2px solid var(--accent-color);
+    outline-offset: -2px;
+    border-radius: 10px;
+    animation: rosa-pulse 2.2s ease-in-out infinite;
+}
+[data-theme^="rosa"] td.block.current-cell { background: color-mix(in srgb, var(--accent-color) 22%, var(--cal-bg)); }
+@keyframes rosa-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent-color) 45%, transparent); }
+    50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent-color) 0%, transparent); }
+}
+
+/* Ricerca: prompt a cuoricino, input a pillola */
+[data-theme^="rosa"] .actions-search .search-prompt { display: inline; color: var(--accent-color); }
+[data-theme^="rosa"] .actions-search input {
+    border-radius: 999px;
+    border: 1.5px solid color-mix(in srgb, var(--accent-color) 40%, transparent);
+    background: color-mix(in srgb, var(--accent-color) 6%, var(--cal-bg));
+}
+[data-theme^="rosa"] .actions-search input:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-color) 18%, transparent);
+}
+
+/* Vista giorno: card più arrotondate, nav rotonda, pallini che rimbalzano */
+[data-theme^="rosa"] .day-lesson { border-radius: 14px; border-left-width: 5px; box-shadow: 0 2px 8px color-mix(in srgb, var(--subject-color, var(--accent-color)) 18%, transparent); }
+[data-theme^="rosa"] .day-nav-btn { border-radius: 50%; border: 1.5px solid var(--cal-border); background: color-mix(in srgb, var(--accent-color) 8%, transparent); color: var(--accent-color); }
+[data-theme^="rosa"] .day-nav-btn:hover { background: var(--accent-color); color: #fff; }
+[data-theme^="rosa"] .day-dot-mark { border-radius: 999px; }
+[data-theme^="rosa"] .day-dot.active .day-dot-mark { animation: rosa-bounce 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); }
+@keyframes rosa-bounce { 50% { transform: scale(1.7); } }
+
+/* Legenda: pallini tondi */
+[data-theme^="rosa"] .legend-color { border-radius: 999px; }
+
+/* Selezione testo e scrollbar rosa */
+[data-theme^="rosa"] ::selection { background: var(--accent-color); color: #fff; }
+[data-theme^="rosa"] * { scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--accent-color) 45%, transparent) var(--cal-bg); }
+[data-theme^="rosa"] *::-webkit-scrollbar { width: 8px; height: 8px; }
+[data-theme^="rosa"] *::-webkit-scrollbar-track { background: var(--cal-bg); }
+[data-theme^="rosa"] *::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--accent-color) 45%, transparent); border-radius: 999px; }
+[data-theme^="rosa"] *::-webkit-scrollbar-thumb:hover { background: var(--accent-color); }
+
+/* Loading: cuoricino nel testo */
+[data-theme^="rosa"] .loading-screen .spinner { color: var(--accent-color); }
+[data-theme^="rosa"] .loading-screen .loading-text::before { content: '♡ '; }
+
+/* Calendario, snake, login (pagine WIP, ma coerenti lo stesso) */
+[data-theme^="rosa"] .modal-box { border-radius: 20px; border: 1px solid color-mix(in srgb, var(--accent-color) 25%, var(--cal-border)); box-shadow: 0 10px 40px color-mix(in srgb, var(--accent-color) 28%, transparent); }
+[data-theme^="rosa"] .cal-day.today .day-num { border-radius: 999px; }
+[data-theme^="rosa"] .day-event { border-radius: 999px; }
+[data-theme^="rosa"] .color-picker label { border-radius: 50%; }
+[data-theme^="rosa"] .game-container,
+[data-theme^="rosa"] #gameCanvas,
+[data-theme^="rosa"] .settings-menu,
+[data-theme^="rosa"] .login-card { border-radius: 20px; border: 1px solid color-mix(in srgb, var(--accent-color) 25%, var(--cal-border)); }
+[data-theme^="rosa"] .dpad-btn { border-radius: 50%; border: 1.5px solid color-mix(in srgb, var(--accent-color) 40%, transparent); background: color-mix(in srgb, var(--accent-color) 8%, transparent); color: var(--accent-color); }
+[data-theme^="rosa"] .dpad-btn:hover { background: var(--accent-color); color: #fff; }
+
 @media (prefers-reduced-motion: reduce) {
     [data-theme^="brutal"] td.current-cell { animation: none; }
+    [data-theme^="rosa"] td.current-cell { animation: none; }
+    [data-theme^="rosa"] .day-dot.active .day-dot-mark { animation: none; }
 }
 
 @media print {

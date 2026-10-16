@@ -98,7 +98,34 @@ const SUBJECT_COLORS = [
     '#7d8a72', '#6e7a85', '#9c7380', '#5f8a85', '#a3906e',
 ];
 
+// Palette per i temi rosa: pastelli rosa/mauve/lavanda, coerenti con i
+// toni del tema. Scelta per materia come quella base.
+const SUBJECT_COLORS_ROSA = [
+    '#d16a96', '#b48bab', '#c98ba0', '#a98cb8', '#d99cae',
+    '#bc8f9f', '#c9929f', '#a890a5', '#dba3b5', '#b8909f',
+];
+
 let subjectColorMap = {};
+let subjectColorPalette = null;
+
+function currentSubjectPalette() {
+    const theme = document.documentElement.getAttribute('data-theme') || '';
+    return theme.startsWith('rosa') ? SUBJECT_COLORS_ROSA : SUBJECT_COLORS;
+}
+
+function getSubjectColor(subject) {
+    const palette = currentSubjectPalette();
+    // Cambio tema → cambia la palette: la cache va azzerata
+    if (palette !== subjectColorPalette) {
+        subjectColorMap = {};
+        subjectColorPalette = palette;
+    }
+    if (!subjectColorMap[subject]) {
+        subjectColorMap[subject] = palette[Object.keys(subjectColorMap).length % palette.length];
+    }
+    return subjectColorMap[subject];
+}
+
 let grid = [];
 
 function timeToSlot(timeStr) {
