@@ -1,4 +1,4 @@
-# Sigmaorario
+# Tildaorario
 
 Visualizzatore orario settimanale per il mio personale corso di laurea (A.S. 2026/2027).
 App non ufficiale — per gli orari attendibili fa fede il sito del Politecnico di Milano.

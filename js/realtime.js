@@ -969,7 +969,7 @@ function exportSchedule() {
                 `EXDATE:${exDates}`,
                 `SUMMARY:${lesson.subject}`,
                 `LOCATION:${lesson.room}`,
-                `UID:sigmaorario-e${uidCounter}@sigmaorario`,
+                `UID:tildaorario-e${uidCounter}@tildaorario`,
                 'END:VEVENT',
             ].join('\r\n'));
         }
@@ -978,7 +978,7 @@ function exportSchedule() {
     const ics = [
         'BEGIN:VCALENDAR',
         'VERSION:2.0',
-        'PRODID:-//SigmaOrario//IT',
+        'PRODID:-//TildaOrario//IT',
         'CALSCALE:GREGORIAN',
         'METHOD:PUBLISH',
         'X-WR-CALNAME:Orario 5BINF',
