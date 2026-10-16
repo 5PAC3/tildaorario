@@ -95,38 +95,38 @@
 
 /* Rosa chiaro — petalo e prugna: rosa adulto, linee sottili, niente candy */
 [data-theme="rosa"] {
-    --cal-bg: #faf5f6;
-    --cal-header-bg: #f3e7ec;
-    --cal-day-bg: #f3e7ec;
-    --cal-border: #e3cdd8;
-    --cal-border-light: #eddde4;
+    --cal-bg: #f3e2ea;
+    --cal-header-bg: #ecd4df;
+    --cal-day-bg: #ecd4df;
+    --cal-border: #ddbccb;
+    --cal-border-light: #e6cbd7;
     --cal-text: #3a2530;
     --cal-text-muted: #8d6a7b;
     --accent-color: #b8436b;
     --cal-orange: #9c4a63;
     --cal-current-outline: rgba(58, 37, 48, 0.55);
-    --cal-current-bg: rgba(184, 67, 107, 0.10);
+    --cal-current-bg: rgba(184, 67, 107, 0.12);
     --cal-search-outline: #3a2530;
-    --cal-cell-alt: #ffffff;
+    --cal-cell-alt: #f8edf2;
     /* "Ink": testo su superfici accent (l'accent è scuro → ink chiaro) */
     --rosa-ink: #fdf7f9;
 }
 
 /* Rosa scuro — vino/prugna profondo con accento rosa cipria */
 [data-theme="rosa-dark"] {
-    --cal-bg: #221820;
-    --cal-header-bg: #2c2029;
-    --cal-day-bg: #2c2029;
-    --cal-border: #4a3644;
-    --cal-border-light: #5b4455;
-    --cal-text: #f0e4ea;
-    --cal-text-muted: #ab8b9b;
+    --cal-bg: #34222f;
+    --cal-header-bg: #3f2b3a;
+    --cal-day-bg: #3f2b3a;
+    --cal-border: #5b4153;
+    --cal-border-light: #6b4e62;
+    --cal-text: #f5e6ee;
+    --cal-text-muted: #bb95a8;
     --accent-color: #e58aad;
     --cal-orange: #e89bb2;
-    --cal-current-outline: rgba(240, 228, 234, 0.6);
-    --cal-current-bg: rgba(229, 138, 173, 0.13);
-    --cal-search-outline: #f0e4ea;
-    --cal-cell-alt: #271d25;
+    --cal-current-outline: rgba(245, 230, 238, 0.6);
+    --cal-current-bg: rgba(229, 138, 173, 0.14);
+    --cal-search-outline: #f5e6ee;
+    --cal-cell-alt: #3a2635;
     /* "Ink": testo su superfici accent (l'accent è chiaro → ink scuro) */
     --rosa-ink: #221820;
 }
