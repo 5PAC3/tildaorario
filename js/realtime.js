@@ -35,16 +35,21 @@ function initTheme() {
     if (!document.documentElement.getAttribute('data-theme')) {
         const memorized = isMemorized();
         const saved = memorized ? localStorage.getItem('theme') : null;
-        document.documentElement.setAttribute('data-theme', saved || 'brutal');
+        document.documentElement.setAttribute('data-theme', saved || 'rosa-dark');
     }
     updateLockUI();
 
+    // Cambio live del tema di sistema: segue la variante (rosa o dark/light)
+    // solo se l'utente non ha un tema salvato col lock.
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-        if (!isMemorized() && !isPrinting) {
-            const current = document.documentElement.getAttribute('data-theme');
-            if (current !== 'dark' && current !== 'light') return;
+        if (isMemorized() || isPrinting) return;
+        const current = document.documentElement.getAttribute('data-theme') || '';
+        if (current === 'rosa' || current === 'rosa-dark') {
+            setTheme(e.matches ? 'rosa-dark' : 'rosa');
+        } else if (current === 'dark' || current === 'light') {
             setTheme(e.matches ? 'dark' : 'light');
         }
+        // brutal: resta com'è, non ha variante chiara/scura legata al sistema
     });
 }
 

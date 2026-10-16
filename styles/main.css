@@ -1,3 +1,7 @@
+/* Font dei temi rosa: Outfit (geometrico, pulito) + Fraunces (serif
+   morbido) per titoli e nomi materia. Caricati via CDN, come le icone. */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;600&family=Outfit:wght@300;400;500;600;700&display=swap');
+
 @font-face {
     font-family: 'JetBrains Mono Nerd';
     src: url('https://raw.githubusercontent.com/Nick2bad4u/nerd-fonts-woff2/main/fonts/woff2/JetBrainsMono/JetBrainsMonoNerdFont-Regular.woff2') format('woff2');
@@ -355,7 +359,10 @@ td.block-middle { border-top: none; border-bottom: none; }
 td[data-link] { cursor: pointer; position: relative; }
 td[data-link]:hover { background: color-mix(in srgb, var(--subject-color) 18%, transparent); }
 
+/* Materia su una sola riga (ellipsis se lunga), aula su riga propria che
+   puo' andare a capo senza troncarsi */
 td.subject-cell { 
+    display: block;
     font-weight: 600; 
     color: var(--cal-text);
     text-shadow: 0 0 8px color-mix(in srgb, var(--subject-color) 60%, transparent);
@@ -363,12 +370,17 @@ td.subject-cell {
     line-height: 1.3;
     letter-spacing: 0.01em;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
 }
 td.room-cell { 
     font-size: 0.55rem; 
     color: var(--cal-text-muted); 
     margin-top: 2px; 
     display: block; 
+    white-space: normal;
+    overflow-wrap: anywhere;
 }
 td.link-icon { 
     font-size: 0.6rem; 
@@ -704,10 +716,12 @@ footer a:hover { color: var(--accent-color); }
     text-transform: uppercase;
     letter-spacing: 0.03em;
     line-height: 1.4;
-    white-space: normal;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     width: 100%;
 }
-[data-theme^="brutal"] .room-cell { color: var(--brutal-room); font-size: 0.7rem; font-weight: 400; line-height: 1.4; }
+[data-theme^="brutal"] .room-cell { color: var(--brutal-room); font-size: 0.7rem; font-weight: 400; line-height: 1.4; white-space: normal; overflow-wrap: anywhere; }
 [data-theme^="brutal"] .link-icon { color: var(--cal-text-ice); opacity: 0.7; }
 [data-theme^="brutal"] td[data-link]:hover { background: color-mix(in srgb, var(--subject-color) 42%, var(--cal-header-bg)); filter: none; }
 
@@ -853,6 +867,18 @@ footer a:hover { color: var(--accent-color); }
 /* spaziato, niente ombre) con i tweak rosa: bordature e accenti berry, */
 /* piccolo raggio (6px), motivo nastro al posto di "//" e ">".          */
 
+/* Font: Outfit per l'interfaccia, Fraunces per titoli e nomi materia */
+[data-theme^="rosa"] body,
+[data-theme^="rosa"] input,
+[data-theme^="rosa"] select,
+[data-theme^="rosa"] textarea,
+[data-theme^="rosa"] button { font-family: 'Outfit', ui-sans-serif, system-ui, sans-serif; }
+[data-theme^="rosa"] header h1,
+[data-theme^="rosa"] .schedule-header h2,
+[data-theme^="rosa"] .subject-cell,
+[data-theme^="rosa"] .day-view-title { font-family: 'Fraunces', Georgia, serif; }
+[data-theme^="rosa"] .subject-cell { text-transform: none; letter-spacing: 0.01em; font-weight: 600; }
+
 /* Transizioni brevi e pulite: niente overshoot */
 [data-theme^="rosa"] .btn,
 [data-theme^="rosa"] .main-nav a,
@@ -941,10 +967,12 @@ footer a:hover { color: var(--accent-color); }
     text-transform: uppercase;
     letter-spacing: 0.03em;
     line-height: 1.4;
-    white-space: normal;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     width: 100%;
 }
-[data-theme^="rosa"] .room-cell { color: color-mix(in srgb, var(--subject-color) 60%, var(--cal-text)); font-size: 0.7rem; font-weight: 400; line-height: 1.4; }
+[data-theme^="rosa"] .room-cell { color: color-mix(in srgb, var(--subject-color) 60%, var(--cal-text)); font-size: 0.7rem; font-weight: 400; line-height: 1.4; white-space: normal; overflow-wrap: anywhere; }
 [data-theme^="rosa"] td[data-link]:hover { background: color-mix(in srgb, var(--subject-color) 34%, var(--cal-header-bg)); filter: none; }
 
 /* Ricerca: contorno pieno accent sul blocco (una cella sola → lastra intera) */

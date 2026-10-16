@@ -3,16 +3,23 @@
    e costruisce il selettore quando il DOM è pronto. */
 (function () {
     var THEMES = [
+        { value: 'rosa-dark',    label: 'Rosa scuro',    bg: '#221820', accent: '#e58aad' },
+        { value: 'rosa',         label: 'Rosa chiaro',   bg: '#faf5f6', accent: '#b8436b' },
         { value: 'brutal',       label: 'Brutal scuro',  bg: '#1a1a1a', accent: '#cfcfcf' },
         { value: 'brutal-light', label: 'Brutal chiaro', bg: '#d9d9d9', accent: '#333333' },
         { value: 'dark',         label: 'Scuro',         bg: '#0d1117', accent: '#44633F' },
-        { value: 'light',        label: 'Chiaro',        bg: '#f6f8fa', accent: '#6a8d60' },
-        { value: 'rosa',         label: 'Rosa chiaro',   bg: '#faf5f6', accent: '#b8436b' },
-        { value: 'rosa-dark',    label: 'Rosa scuro',    bg: '#221820', accent: '#e58aad' }
+        { value: 'light',        label: 'Chiaro',        bg: '#f6f8fa', accent: '#6a8d60' }
     ];
 
-    // Tema di default quando non c'è nulla di salvato (vedi bootstrap sotto).
-    var DEFAULT_THEME = 'brutal';
+    // Tema di default quando non c'è nulla di salvato (vedi bootstrap sotto):
+    // rosa scuro, oppure la variante rosa coerente col tema di sistema se
+    // il browser lo dichiara (prefers-color-scheme).
+    var DEFAULT_THEME = 'rosa-dark';
+
+    function systemRosaVariant() {
+        if (!window.matchMedia) return DEFAULT_THEME;
+        return window.matchMedia('(prefers-color-scheme: light)').matches ? 'rosa' : 'rosa-dark';
+    }
 
     function isMemorized() {
         return localStorage.getItem('settingsMemorize') === '1';
@@ -31,11 +38,12 @@
 
     // --- Bootstrap immediato (gira anche nell'<head>): nessun flash di tema ---
     // FEATURE VOLUTA (NON "FIXARE"): tema salvato/letto SOLO con il lock attivo.
-    // Senza lock (o primo accesso) si parte dal tema di default: brutal scuro.
+    // Senza lock (o primo accesso) si parte dal tema di default: rosa scuro
+    // (o rosa chiaro, se il sistema dichiara un tema chiaro).
     var initial = document.documentElement.getAttribute('data-theme');
     if (!themeInfo(initial)) {
         var saved = isMemorized() ? localStorage.getItem('theme') : null;
-        initial = themeInfo(saved) ? saved : DEFAULT_THEME;
+        initial = themeInfo(saved) ? saved : systemRosaVariant();
         document.documentElement.setAttribute('data-theme', initial);
     }
 
