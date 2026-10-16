@@ -1,7 +1,7 @@
 # Tildaorario
 
 Visualizzatore orario settimanale per il mio personale corso di laurea (A.S. 2026/2027).
-App non ufficiale — per gli orari attendibili fa fede il sito del Politecnico di Milano.
+App non ufficiale — per gli orari attendibili fa fede il sito dell'Università degli Studi di Milano.
 
 ## Funzionalità
 
@@ -9,7 +9,7 @@ App non ufficiale — per gli orari attendibili fa fede il sito del Politecnico 
 - **Indicatore lezione attuale** — riquadro sulla cella ora/giorno corrente
 - **Ricerca materie** — filtra mentre scrivi (debounce) e con Invio; evidenzia tutte le occorrenze
 - **Densità regolabile** — slider per l'altezza righe (persistito in localStorage)
-- **Temi** — 4 temi: *Brutal scuro* (default), *Brutal chiaro*, *Scuro*, *Chiaro*, scelti da un selettore a tendina
+- **Temi** — 6 temi: *Rosa scuro* (default), *Rosa chiaro*, *Brutal scuro*, *Brutal chiaro*, *Scuro*, *Chiaro*, scelti da un selettore a tendina; i temi rosa seguono anche il tema di sistema quando non c'è una scelta esplicita
 - **Motion** — wipe radiale al cambio tema, slide al cambio mese, animazioni dei modali e della ricerca (rispetta `prefers-reduced-motion`)
 - **Link aule** — click su una lezione apre la mappa AUNICA dell'aula
 - **Viste mobile** — su schermi stretti: *giorno* (lista), *giorno tabella* (griglia oraria coi blocchi) e *tabella piena*, con pallini e swipe per cambiare giorno
@@ -28,7 +28,8 @@ App non ufficiale — per gli orari attendibili fa fede il sito del Politecnico 
 
 - HTML / CSS / Vanilla JS (nessun build step)
 - Supabase (auth + database per il calendario) (WIP)
-- [JetBrains Mono Nerd Font](https://www.nerdfonts.com/) — testo e icone (via CDN)
+- [JetBrains Mono Nerd Font](https://www.nerdfonts.com/) — testo e icone dei temi non-rosa (via CDN)
+- [Google Fonts](https://fonts.google.com/) — Outfit e Fraunces per i temi rosa (via `@import` in `main.css`)
 - [Netlify](https://www.netlify.com/) per il deploy
 
 ## Sviluppo
@@ -46,8 +47,8 @@ L'orario sta in **`orario.json`** (chiavi `0`–`4` = lunedì–venerdì):
 
 ```json
 {
-  "0": [
-    { "subject": "ANALISI MATEMATICA 1", "start": "13:15", "end": "16:15", "room": "2.1.4" }
+  "2": [
+    { "subject": "MICROECONOMIA", "start": "12:30", "end": "14:30", "room": "Aula 11 - Conservatorio (Edificio 3)" }
   ]
 }
 ```
@@ -55,12 +56,13 @@ L'orario sta in **`orario.json`** (chiavi `0`–`4` = lunedì–venerdì):
 Viene caricato via `fetch` da `js/realtime.js`. Per aggiornarlo basta modificare il JSON:
 niente da toccare nel codice.
 
-I link delle aule (es. accesso AUNICA) stanno invece in **`aule.json`**, mappa
-stanza → link, caricato nello stesso momento:
+I link delle aule (porta dell'aula) stanno invece in **`aule.json`**, mappa
+stanza → link, caricato nello stesso momento. Al momento è vuoto (`{}`), perché
+le aule del nuovo orario non hanno ancora un link:
 
 ```json
 {
-  "T.1.1": "https://aunicalogin.polimi.it/aunicalogin/getservizio.xml?id_servizio=343&idaula=53&lang=IT"
+  "Aula 11 - Conservatorio (Edificio 3)": "https://esempio.it/aula"
 }
 ```
 

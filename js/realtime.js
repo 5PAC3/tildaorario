@@ -1021,7 +1021,7 @@ function exportSchedule() {
         'PRODID:-//TildaOrario//IT',
         'CALSCALE:GREGORIAN',
         'METHOD:PUBLISH',
-        'X-WR-CALNAME:Orario 5BINF',
+        'X-WR-CALNAME:Orario 2026/2027',
         'X-WR-TIMEZONE:Europe/Rome',
         ...events,
         'END:VCALENDAR',
