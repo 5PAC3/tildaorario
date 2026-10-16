@@ -53,6 +53,7 @@
 .nf-fa-clipboard_check::before { content: "\ed7a"; }
 .nf-fa-pencil::before { content: "\f040"; }
 .nf-fa-folder::before { content: "\f07b"; }
+.nf-fa-ribbon::before { content: "\f263"; }
 .nf-dev-github::before { content: "\f09b"; }
 
 :root {
@@ -88,38 +89,42 @@
     --cal-cell-alt: #ffffff;
 }
 
-/* Rosa chiaro — rosa cipria/dusty rose su crema (tema "femminile", non shocking) */
+/* Rosa chiaro — petalo e prugna: rosa adulto, linee sottili, niente candy */
 [data-theme="rosa"] {
-    --cal-bg: #fdf4f7;
-    --cal-header-bg: #f9e7ef;
-    --cal-day-bg: #f9e7ef;
-    --cal-border: #eccfdd;
-    --cal-border-light: #f3dde7;
-    --cal-text: #3d2b34;
-    --cal-text-muted: #96707f;
-    --accent-color: #d16a96;
-    --cal-orange: #b4557e;
-    --cal-current-outline: rgba(61, 43, 52, 0.55);
-    --cal-current-bg: rgba(209, 106, 150, 0.12);
-    --cal-search-outline: #3d2b34;
+    --cal-bg: #faf5f6;
+    --cal-header-bg: #f3e7ec;
+    --cal-day-bg: #f3e7ec;
+    --cal-border: #e3cdd8;
+    --cal-border-light: #eddde4;
+    --cal-text: #3a2530;
+    --cal-text-muted: #8d6a7b;
+    --accent-color: #b8436b;
+    --cal-orange: #9c4a63;
+    --cal-current-outline: rgba(58, 37, 48, 0.55);
+    --cal-current-bg: rgba(184, 67, 107, 0.10);
+    --cal-search-outline: #3a2530;
     --cal-cell-alt: #ffffff;
+    /* "Ink": testo su superfici accent (l'accent è scuro → ink chiaro) */
+    --rosa-ink: #fdf7f9;
 }
 
-/* Rosa scuro — prugna scurissima con accento rosa (mai nero pieno) */
+/* Rosa scuro — vino/prugna profondo con accento rosa cipria */
 [data-theme="rosa-dark"] {
-    --cal-bg: #241b22;
-    --cal-header-bg: #2f2430;
-    --cal-day-bg: #2f2430;
-    --cal-border: #4a3a49;
-    --cal-border-light: #5b4759;
-    --cal-text: #f0e2ea;
-    --cal-text-muted: #b79aa9;
-    --accent-color: #ef97bd;
-    --cal-orange: #f0a3c4;
-    --cal-current-outline: rgba(240, 226, 234, 0.6);
-    --cal-current-bg: rgba(239, 151, 189, 0.14);
-    --cal-search-outline: #f0e2ea;
-    --cal-cell-alt: #2b2029;
+    --cal-bg: #221820;
+    --cal-header-bg: #2c2029;
+    --cal-day-bg: #2c2029;
+    --cal-border: #4a3644;
+    --cal-border-light: #5b4455;
+    --cal-text: #f0e4ea;
+    --cal-text-muted: #ab8b9b;
+    --accent-color: #e58aad;
+    --cal-orange: #e89bb2;
+    --cal-current-outline: rgba(240, 228, 234, 0.6);
+    --cal-current-bg: rgba(229, 138, 173, 0.13);
+    --cal-search-outline: #f0e4ea;
+    --cal-cell-alt: #271d25;
+    /* "Ink": testo su superfici accent (l'accent è chiaro → ink scuro) */
+    --rosa-ink: #221820;
 }
 
 /* Brutal scuro — béton brut notturno (cemento grigio su fondo scuro) */
@@ -844,145 +849,166 @@ footer a:hover { color: var(--accent-color); }
 [data-theme^="brutal"] .login-spinner { border-radius: 0; border-color: var(--cal-border-light); border-top-color: var(--cal-text-ice); }
 
 /* ------------------------------------------------------------------ */
-/* Tema rosa — soft girl / kawaii: tutto morbido, pill, cuoricini      */
-/* (l'accento è sempre var(--accent-color), quindi adattato anche al  */
-/*  rosa scuro; i colori restano desaturati, mai shocking pink)        */
+/* Tema rosa — stessa ossatura brutal (linee nette, piatto, maiuscoletto */
+/* spaziato, niente ombre) con i tweak rosa: bordature e accenti berry, */
+/* piccolo raggio (6px), motivo nastro al posto di "//" e ">".          */
 
-/* Transizioni morbide con lieve "gomma" (overshoot) */
+/* Transizioni brevi e pulite: niente overshoot */
 [data-theme^="rosa"] .btn,
 [data-theme^="rosa"] .main-nav a,
 [data-theme^="rosa"] .theme-toggle,
 [data-theme^="rosa"] .lock-toggle,
 [data-theme^="rosa"] .day-nav-btn,
-[data-theme^="rosa"] .day-lesson { transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+[data-theme^="rosa"] .day-lesson { transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease; }
 
-/* Titolo e valori con cuoricino al posto del prefisso brutal ("// ", "> ") */
-[data-theme^="rosa"] header h1::before { content: '♡ '; color: var(--accent-color); }
-[data-theme^="rosa"] .current-info .value::before { content: '♡ '; color: var(--accent-color); }
-[data-theme^="rosa"] .footer-line::before { content: '♡ '; color: var(--accent-color); }
+/* Motivo nastro (\f263 = fa-ribbon) al posto dei prefissi brutal */
+[data-theme^="rosa"] header h1::before {
+    content: "\f263";
+    font-family: 'JetBrains Mono Nerd';
+    color: var(--accent-color);
+    font-size: 0.85em;
+}
+[data-theme^="rosa"] .current-info .value::before {
+    content: "\f263";
+    font-family: 'JetBrains Mono Nerd';
+    color: var(--accent-color);
+    font-size: 0.8em;
+}
+[data-theme^="rosa"] .footer-line::before {
+    content: "\f263";
+    font-family: 'JetBrains Mono Nerd';
+    color: var(--accent-color);
+}
 [data-theme^="rosa"] .footer-sep { color: var(--accent-color); }
 
-/* Nav a pillola */
-[data-theme^="rosa"] .main-nav { border-radius: 999px; padding: 0.3rem; border: 1px solid color-mix(in srgb, var(--accent-color) 22%, var(--cal-border)); }
-[data-theme^="rosa"] .main-nav a { border-radius: 999px; }
-[data-theme^="rosa"] .main-nav a.active { background: var(--accent-color); color: #fff; box-shadow: 0 2px 8px color-mix(in srgb, var(--accent-color) 45%, transparent); }
+/* Nav: bordatura netta, raggio minimo, voce attiva in accent */
+[data-theme^="rosa"] .main-nav { border-radius: 6px; border: 2px solid color-mix(in srgb, var(--accent-color) 35%, var(--cal-border)); }
+[data-theme^="rosa"] .main-nav a { border-radius: 4px; }
+[data-theme^="rosa"] .main-nav a.active { background: var(--accent-color); color: var(--rosa-ink); }
 
-/* Card morbide con ombra rosa (current-info, tabella, azioni) */
+/* Card piatti con bordatura berry, nessuna ombra */
 [data-theme^="rosa"] .current-info,
 [data-theme^="rosa"] .schedule-container,
 [data-theme^="rosa"] .actions-bar {
-    border: 1px solid color-mix(in srgb, var(--accent-color) 20%, var(--cal-border));
-    border-radius: 18px;
-    box-shadow: 0 4px 16px color-mix(in srgb, var(--accent-color) 12%, transparent);
+    border: 2px solid color-mix(in srgb, var(--accent-color) 30%, var(--cal-border));
+    border-radius: 6px;
 }
-[data-theme^="rosa"] .schedule-header { border-bottom: 2px dotted color-mix(in srgb, var(--accent-color) 40%, transparent); }
+[data-theme^="rosa"] .schedule-header { border-bottom: 2px solid color-mix(in srgb, var(--accent-color) 30%, var(--cal-border)); }
 [data-theme^="rosa"] .schedule-header h2 { color: var(--accent-color); }
 
-/* Bottoni a pillola, primario pieno */
+/* Bottoni: rettangoli netti, hover pieno accent (testo inchiostro) */
 [data-theme^="rosa"] .btn {
-    border-radius: 999px;
-    border: 1.5px solid color-mix(in srgb, var(--accent-color) 55%, transparent);
-    background: color-mix(in srgb, var(--accent-color) 8%, transparent);
-}
-[data-theme^="rosa"] .btn:hover {
-    background: var(--accent-color);
-    border-color: var(--accent-color);
-    color: #fff;
-    box-shadow: 0 3px 12px color-mix(in srgb, var(--accent-color) 40%, transparent);
-}
-[data-theme^="rosa"] .btn-primary { background: var(--accent-color); border-color: var(--accent-color); color: #fff; }
-[data-theme^="rosa"] .btn-primary:hover { background: color-mix(in srgb, var(--accent-color) 82%, #fff); }
-
-/* Toggle tema/lock: cerchietti pieni */
-[data-theme^="rosa"] .theme-toggle,
-[data-theme^="rosa"] .lock-toggle { border-radius: 50%; background: color-mix(in srgb, var(--accent-color) 12%, transparent); color: var(--accent-color); }
-[data-theme^="rosa"] .theme-toggle:hover,
-[data-theme^="rosa"] .lock-toggle:hover { background: var(--accent-color); color: #fff; transform: scale(1.1); }
-[data-theme^="rosa"] .lock-toggle.locked,
-[data-theme^="rosa"] .lock-toggle.locked:hover { background: var(--accent-color); color: #fff; }
-
-/* Intestazioni tabella: maiuscoletto rosa */
-[data-theme^="rosa"] th {
-    color: var(--accent-color);
+    border-radius: 6px;
+    border: 2px solid color-mix(in srgb, var(--accent-color) 45%, var(--cal-border));
+    background: transparent;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    border-bottom: 2px solid color-mix(in srgb, var(--accent-color) 35%, transparent);
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
 }
-[data-theme^="rosa"] th.today-highlight { background: var(--accent-color); color: #fff; box-shadow: none; }
+[data-theme^="rosa"] .btn:hover { background: var(--accent-color); border-color: var(--accent-color); color: var(--rosa-ink); }
+[data-theme^="rosa"] .btn-primary { background: var(--accent-color); border-color: var(--accent-color); color: var(--rosa-ink); }
+[data-theme^="rosa"] .btn-primary:hover { background: color-mix(in srgb, var(--accent-color) 82%, var(--cal-text)); border-color: color-mix(in srgb, var(--accent-color) 82%, var(--cal-text)); }
 
-/* Blocco lezione: schedina arrotondata con bordo pastello */
-[data-theme^="rosa"] td.block { border: 1.5px solid color-mix(in srgb, var(--subject-color) 50%, transparent); background: color-mix(in srgb, var(--subject-color) 14%, var(--cal-bg)); }
-[data-theme^="rosa"] td.block-start { border-radius: 12px 12px 0 0; }
-[data-theme^="rosa"] td.block-end { border-radius: 0 0 12px 12px; }
-[data-theme^="rosa"] td.block-start.block-end { border-radius: 12px; }
-[data-theme^="rosa"] td.block-middle { border-left: 1.5px solid color-mix(in srgb, var(--subject-color) 50%, transparent); border-right: 1.5px solid color-mix(in srgb, var(--subject-color) 50%, transparent); }
-[data-theme^="rosa"] .subject-cell::before { content: '♡ '; color: var(--subject-color); font-size: 0.75em; }
-[data-theme^="rosa"] td[data-link]:hover { background: color-mix(in srgb, var(--subject-color) 26%, var(--cal-bg)); }
+/* Toggle tema/lock: quadrati con raggio minimo, locked resta acceso */
+[data-theme^="rosa"] .theme-toggle,
+[data-theme^="rosa"] .lock-toggle { border-radius: 6px; border: 2px solid color-mix(in srgb, var(--accent-color) 45%, var(--cal-border)); background: transparent; color: var(--cal-text-muted); }
+[data-theme^="rosa"] .theme-toggle:hover,
+[data-theme^="rosa"] .lock-toggle:hover { background: var(--accent-color); border-color: var(--accent-color); color: var(--rosa-ink); }
+[data-theme^="rosa"] .lock-toggle.locked,
+[data-theme^="rosa"] .lock-toggle.locked:hover { background: var(--accent-color); border-color: var(--accent-color); color: var(--rosa-ink); }
 
-/* Lezione in corso: alone rosa che respira */
+/* Intestazioni tabella: maiuscoletto spaziato, filetto accent */
+[data-theme^="rosa"] th {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--accent-color);
+}
+[data-theme^="rosa"] tr.hour-separator td { border-top: 2px solid color-mix(in srgb, var(--accent-color) 28%, var(--cal-border-light)); }
+[data-theme^="rosa"] th.today-highlight { background: var(--accent-color); color: var(--rosa-ink); box-shadow: none; }
+
+/* Blocco lezione: lastra piatta tinta, bordo laterale accent */
+[data-theme^="rosa"] td.block {
+    background: color-mix(in srgb, var(--subject-color) 20%, var(--cal-header-bg));
+    border-left: 3px solid var(--subject-color);
+    border-right: none;
+}
+[data-theme^="rosa"] .subject-cell {
+    text-shadow: none;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+[data-theme^="rosa"] .room-cell { color: color-mix(in srgb, var(--subject-color) 60%, var(--cal-text)); }
+[data-theme^="rosa"] td[data-link]:hover { background: color-mix(in srgb, var(--subject-color) 34%, var(--cal-header-bg)); }
+
+/* Ricerca: contorno pieno accent sul blocco (come brutal, ma rosa) */
+[data-theme^="rosa"] td.search-highlight {
+    outline: 3px solid var(--accent-color);
+    outline-offset: -3px;
+    border-left: none !important;
+    border-right: none !important;
+    z-index: 3;
+    position: relative;
+}
+[data-theme^="rosa"] .actions-search .search-prompt { display: inline; font-size: 1.1rem; font-weight: 700; color: var(--accent-color); user-select: none; }
+[data-theme^="rosa"] .actions-search input { border-radius: 6px; border: 2px solid color-mix(in srgb, var(--accent-color) 40%, var(--cal-border)); }
+[data-theme^="rosa"] .actions-search input:focus { outline: none; border-color: var(--accent-color); }
+
+/* Lezione in corso: outline accent pieno, nessuna animazione */
 [data-theme^="rosa"] td.current-cell {
-    outline: 2px solid var(--accent-color);
-    outline-offset: -2px;
-    border-radius: 10px;
-    animation: rosa-pulse 2.2s ease-in-out infinite;
+    outline: 3px solid var(--accent-color);
+    outline-offset: -3px;
 }
-[data-theme^="rosa"] td.block.current-cell { background: color-mix(in srgb, var(--accent-color) 22%, var(--cal-bg)); }
-@keyframes rosa-pulse {
-    0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent-color) 45%, transparent); }
-    50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent-color) 0%, transparent); }
-}
+[data-theme^="rosa"] td.block.current-cell { background: color-mix(in srgb, var(--accent-color) 28%, var(--cal-header-bg)); }
 
-/* Ricerca: prompt a cuoricino, input a pillola */
-[data-theme^="rosa"] .actions-search .search-prompt { display: inline; color: var(--accent-color); }
-[data-theme^="rosa"] .actions-search input {
-    border-radius: 999px;
-    border: 1.5px solid color-mix(in srgb, var(--accent-color) 40%, transparent);
-    background: color-mix(in srgb, var(--accent-color) 6%, var(--cal-bg));
-}
-[data-theme^="rosa"] .actions-search input:focus {
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-color) 18%, transparent);
-}
+/* Vista giorno: bordi netti, raggio minimo */
+[data-theme^="rosa"] .day-lesson { border-radius: 6px; border: 2px solid var(--cal-border); border-left: 4px solid var(--subject-color, var(--accent-color)); background: color-mix(in srgb, var(--subject-color, var(--accent-color)) 12%, var(--cal-bg)); }
+[data-theme^="rosa"] .day-lesson.is-current { border-color: var(--accent-color); }
+[data-theme^="rosa"] .day-nav-btn { border-radius: 6px; border: 2px solid color-mix(in srgb, var(--accent-color) 45%, var(--cal-border)); background: transparent; color: var(--accent-color); }
+[data-theme^="rosa"] .day-nav-btn:hover { background: var(--accent-color); color: var(--rosa-ink); border-color: var(--accent-color); }
+[data-theme^="rosa"] .day-dot-mark { border-radius: 2px; }
+[data-theme^="rosa"] .day-dot.active { color: var(--accent-color); }
 
-/* Vista giorno: card più arrotondate, nav rotonda, pallini che rimbalzano */
-[data-theme^="rosa"] .day-lesson { border-radius: 14px; border-left-width: 5px; box-shadow: 0 2px 8px color-mix(in srgb, var(--subject-color, var(--accent-color)) 18%, transparent); }
-[data-theme^="rosa"] .day-nav-btn { border-radius: 50%; border: 1.5px solid var(--cal-border); background: color-mix(in srgb, var(--accent-color) 8%, transparent); color: var(--accent-color); }
-[data-theme^="rosa"] .day-nav-btn:hover { background: var(--accent-color); color: #fff; }
-[data-theme^="rosa"] .day-dot-mark { border-radius: 999px; }
-[data-theme^="rosa"] .day-dot.active .day-dot-mark { animation: rosa-bounce 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); }
-@keyframes rosa-bounce { 50% { transform: scale(1.7); } }
+/* Legenda: quadratini con raggio minimo */
+[data-theme^="rosa"] .legend-color { border-radius: 2px; border: 1px solid color-mix(in srgb, var(--accent-color) 50%, transparent); }
 
-/* Legenda: pallini tondi */
-[data-theme^="rosa"] .legend-color { border-radius: 999px; }
-
-/* Selezione testo e scrollbar rosa */
-[data-theme^="rosa"] ::selection { background: var(--accent-color); color: #fff; }
-[data-theme^="rosa"] * { scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--accent-color) 45%, transparent) var(--cal-bg); }
+/* Selezione testo e scrollbar accent */
+[data-theme^="rosa"] ::selection { background: var(--accent-color); color: var(--rosa-ink); }
+[data-theme^="rosa"] * { scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--accent-color) 50%, transparent) var(--cal-bg); }
 [data-theme^="rosa"] *::-webkit-scrollbar { width: 8px; height: 8px; }
 [data-theme^="rosa"] *::-webkit-scrollbar-track { background: var(--cal-bg); }
-[data-theme^="rosa"] *::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--accent-color) 45%, transparent); border-radius: 999px; }
+[data-theme^="rosa"] *::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--accent-color) 50%, transparent); border-radius: 0; }
 [data-theme^="rosa"] *::-webkit-scrollbar-thumb:hover { background: var(--accent-color); }
 
-/* Loading: cuoricino nel testo */
+/* Loading: nastro prima del testo */
 [data-theme^="rosa"] .loading-screen .spinner { color: var(--accent-color); }
-[data-theme^="rosa"] .loading-screen .loading-text::before { content: '♡ '; }
+[data-theme^="rosa"] .loading-screen .loading-text::before {
+    content: "\f263";
+    font-family: 'JetBrains Mono Nerd';
+}
 
 /* Calendario, snake, login (pagine WIP, ma coerenti lo stesso) */
-[data-theme^="rosa"] .modal-box { border-radius: 20px; border: 1px solid color-mix(in srgb, var(--accent-color) 25%, var(--cal-border)); box-shadow: 0 10px 40px color-mix(in srgb, var(--accent-color) 28%, transparent); }
-[data-theme^="rosa"] .cal-day.today .day-num { border-radius: 999px; }
-[data-theme^="rosa"] .day-event { border-radius: 999px; }
-[data-theme^="rosa"] .color-picker label { border-radius: 50%; }
+[data-theme^="rosa"] .modal-box { border-radius: 6px; border: 2px solid color-mix(in srgb, var(--accent-color) 30%, var(--cal-border)); }
+[data-theme^="rosa"] .modal-header, [data-theme^="rosa"] .modal-footer { border-color: color-mix(in srgb, var(--accent-color) 30%, var(--cal-border)); }
+[data-theme^="rosa"] .cal-grid, [data-theme^="rosa"] .cal-header { border-color: color-mix(in srgb, var(--accent-color) 30%, var(--cal-border)); }
+[data-theme^="rosa"] .cal-day.today .day-num { border-radius: 4px; background: var(--accent-color); color: var(--rosa-ink); }
+[data-theme^="rosa"] .day-event { border-radius: 4px; }
+[data-theme^="rosa"] .color-picker label { border-radius: 4px; }
+[data-theme^="rosa"] .color-picker input:checked + label { border-color: var(--cal-text); }
 [data-theme^="rosa"] .game-container,
 [data-theme^="rosa"] #gameCanvas,
 [data-theme^="rosa"] .settings-menu,
-[data-theme^="rosa"] .login-card { border-radius: 20px; border: 1px solid color-mix(in srgb, var(--accent-color) 25%, var(--cal-border)); }
-[data-theme^="rosa"] .dpad-btn { border-radius: 50%; border: 1.5px solid color-mix(in srgb, var(--accent-color) 40%, transparent); background: color-mix(in srgb, var(--accent-color) 8%, transparent); color: var(--accent-color); }
-[data-theme^="rosa"] .dpad-btn:hover { background: var(--accent-color); color: #fff; }
+[data-theme^="rosa"] .login-card { border-radius: 6px; border: 2px solid color-mix(in srgb, var(--accent-color) 30%, var(--cal-border)); }
+[data-theme^="rosa"] .btn-icon { border-radius: 6px; border: 2px solid color-mix(in srgb, var(--accent-color) 45%, var(--cal-border)); background: transparent; color: var(--accent-color); }
+[data-theme^="rosa"] .btn-icon:hover { background: var(--accent-color); color: var(--rosa-ink); }
+[data-theme^="rosa"] .dpad-btn { border-radius: 6px; border: 2px solid color-mix(in srgb, var(--accent-color) 45%, var(--cal-border)); background: transparent; color: var(--accent-color); }
+[data-theme^="rosa"] .dpad-btn:hover { background: var(--accent-color); color: var(--rosa-ink); }
 
 @media (prefers-reduced-motion: reduce) {
     [data-theme^="brutal"] td.current-cell { animation: none; }
-    [data-theme^="rosa"] td.current-cell { animation: none; }
-    [data-theme^="rosa"] .day-dot.active .day-dot-mark { animation: none; }
 }
 
 @media print {
