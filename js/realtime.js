@@ -54,7 +54,8 @@ function setTheme(theme) {
 }
 
 // Il cambio tema (dal selettore in js/theme.js) richiede di ridisegnare la
-// griglia: il tema brutal usa rowSpan, quindi la struttura delle celle cambia.
+// griglia: i temi "a lastra" (brutal, rosa) usano rowSpan, quindi la
+// struttura delle celle cambia.
 document.addEventListener('themechange', () => {
     if (document.getElementById('scheduleTable')) {
         generaOrario();
@@ -187,6 +188,13 @@ function buildGrid() {
     }
 }
 
+// Temi con blocchi "a lastra" (rowSpan, una cella per lezione): brutal e
+// rosa. Gli altri (dark/light) usano celle spezzate per slot da 15 min.
+function isSlabTheme() {
+    const theme = document.documentElement.getAttribute('data-theme') || '';
+    return theme.startsWith('brutal') || theme.startsWith('rosa');
+}
+
 function generaOrario() {
     const table = document.getElementById('scheduleTable');
     if (!table) return;
@@ -196,7 +204,7 @@ function generaOrario() {
     const tbody = table.querySelector('tbody');
     tbody.innerHTML = '';
 
-    const brutal = (document.documentElement.getAttribute('data-theme') || '').startsWith('brutal');
+    const slab = isSlabTheme();
 
     for (let s = 0; s < TOTAL_SLOTS; s++) {
         const tr = document.createElement('tr');
@@ -216,7 +224,7 @@ function generaOrario() {
         for (let day = 0; day < 5; day++) {
             const cell = grid[s][day];
 
-            if (brutal && cell && !cell.isFirst && !cell.isOnly) {
+            if (slab && cell && !cell.isFirst && !cell.isOnly) {
                 continue;
             }
 
@@ -227,7 +235,7 @@ function generaOrario() {
                 td.dataset.slot = s;
                 td.textContent = '-';
                 td.classList.add('empty');
-            } else if (brutal) {
+            } else if (slab) {
                 const endSlot = getLessonEndSlot(day, s);
                 td.rowSpan = endSlot - s + 1;
                 td.dataset.startSlot = s;
@@ -641,7 +649,7 @@ function renderDayList(body, lessons) {
 
 // Vista giorno "tabella": la giornata come griglia oraria, coi blocchi delle lezioni
 function renderDayGrid(body, idx, lessons) {
-    const brutal = (document.documentElement.getAttribute('data-theme') || '').startsWith('brutal');
+    const slab = isSlabTheme();
 
     // slot occupati dalla lezione in corso (per evidenziarli)
     const nowSlots = new Set();
@@ -680,8 +688,8 @@ function renderDayGrid(body, idx, lessons) {
 
         const cell = grid[s] ? grid[s][idx] : null;
 
-        // nei temi brutal la cella è coperta dal rowSpan del blocco iniziato sopra
-        if (brutal && cell && !cell.isFirst && !cell.isOnly) {
+        // nei temi a lastra la cella è coperta dal rowSpan del blocco iniziato sopra
+        if (slab && cell && !cell.isFirst && !cell.isOnly) {
             tbody.appendChild(tr);
             continue;
         }
@@ -692,7 +700,7 @@ function renderDayGrid(body, idx, lessons) {
         if (!cell) {
             td.classList.add('empty');
             td.textContent = '-';
-        } else if (brutal) {
+        } else if (slab) {
             const endSlot = getLessonEndSlot(idx, s);
             td.rowSpan = endSlot - s + 1;
             td.style.setProperty('--subject-color', cell.color);
