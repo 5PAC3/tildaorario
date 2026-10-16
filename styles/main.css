@@ -88,6 +88,40 @@
     --cal-cell-alt: #ffffff;
 }
 
+/* Rosa chiaro — rosa cipria/dusty rose su crema (tema "femminile", non shocking) */
+[data-theme="rosa"] {
+    --cal-bg: #fdf4f7;
+    --cal-header-bg: #f9e7ef;
+    --cal-day-bg: #f9e7ef;
+    --cal-border: #eccfdd;
+    --cal-border-light: #f3dde7;
+    --cal-text: #3d2b34;
+    --cal-text-muted: #96707f;
+    --accent-color: #d16a96;
+    --cal-orange: #b4557e;
+    --cal-current-outline: rgba(61, 43, 52, 0.55);
+    --cal-current-bg: rgba(209, 106, 150, 0.12);
+    --cal-search-outline: #3d2b34;
+    --cal-cell-alt: #ffffff;
+}
+
+/* Rosa scuro — prugna scurissima con accento rosa (mai nero pieno) */
+[data-theme="rosa-dark"] {
+    --cal-bg: #241b22;
+    --cal-header-bg: #2f2430;
+    --cal-day-bg: #2f2430;
+    --cal-border: #4a3a49;
+    --cal-border-light: #5b4759;
+    --cal-text: #f0e2ea;
+    --cal-text-muted: #b79aa9;
+    --accent-color: #ef97bd;
+    --cal-orange: #f0a3c4;
+    --cal-current-outline: rgba(240, 226, 234, 0.6);
+    --cal-current-bg: rgba(239, 151, 189, 0.14);
+    --cal-search-outline: #f0e2ea;
+    --cal-cell-alt: #2b2029;
+}
+
 /* Brutal scuro — béton brut notturno (cemento grigio su fondo scuro) */
 [data-theme^="brutal"] {
     --cal-bg: #1a1a1a;
@@ -493,9 +527,11 @@ footer a:hover { color: var(--accent-color); }
 .lock-toggle.locked { background: color-mix(in srgb, var(--accent-color) 15%, transparent); color: var(--accent-color); }
 .theme-toggle { min-width: 2.2rem; min-height: 2.2rem; display: inline-flex; align-items: center; justify-content: center; }
 .lock-toggle { min-width: 2.2rem; min-height: 2.2rem; display: inline-flex; align-items: center; justify-content: center; }
-[data-theme="light"] .theme-toggle, [data-theme="light"] .lock-toggle { background: transparent; color: var(--cal-text); }
-[data-theme="light"] .theme-toggle:hover, [data-theme="light"] .lock-toggle:hover { background: rgba(0,0,0,0.05); }
-[data-theme="light"] .lock-toggle.locked { background: color-mix(in srgb, var(--accent-color) 10%, transparent); color: var(--accent-color); }
+[data-theme="light"] .theme-toggle, [data-theme="light"] .lock-toggle,
+[data-theme="rosa"] .theme-toggle, [data-theme="rosa"] .lock-toggle { background: transparent; color: var(--cal-text); }
+[data-theme="light"] .theme-toggle:hover, [data-theme="light"] .lock-toggle:hover,
+[data-theme="rosa"] .theme-toggle:hover, [data-theme="rosa"] .lock-toggle:hover { background: rgba(0,0,0,0.05); }
+[data-theme="light"] .lock-toggle.locked, [data-theme="rosa"] .lock-toggle.locked { background: color-mix(in srgb, var(--accent-color) 10%, transparent); color: var(--accent-color); }
 
 /* Selettore tema: bottone + menu dropdown (costruito da js/theme.js) */
 .theme-toggle { gap: 0.15rem; }
@@ -548,9 +584,12 @@ footer a:hover { color: var(--accent-color); }
 [data-theme^="brutal"] .theme-menu { border-radius: 0; border: 2px solid var(--cal-border-strong); box-shadow: none; }
 [data-theme^="brutal"] .pick-option { border-radius: 0; text-transform: uppercase; letter-spacing: 0.04em; font-size: 0.72rem; font-weight: 700; }
 [data-theme^="brutal"] .theme-swatch { border-radius: 0; }
-[data-theme="light"] tr:nth-child(odd) td.empty { background: color-mix(in srgb, var(--cal-bg) 85%, #ffffff); }
-[data-theme="light"] tr:nth-child(even) td.empty { background: color-mix(in srgb, var(--cal-bg) 40%, #ffffff); }
-[data-theme="light"] td.time-col { background: color-mix(in srgb, var(--cal-bg) 92%, #ffffff); }
+[data-theme="light"] tr:nth-child(odd) td.empty,
+[data-theme="rosa"] tr:nth-child(odd) td.empty { background: color-mix(in srgb, var(--cal-bg) 85%, #ffffff); }
+[data-theme="light"] tr:nth-child(even) td.empty,
+[data-theme="rosa"] tr:nth-child(even) td.empty { background: color-mix(in srgb, var(--cal-bg) 40%, #ffffff); }
+[data-theme="light"] td.time-col,
+[data-theme="rosa"] td.time-col { background: color-mix(in srgb, var(--cal-bg) 92%, #ffffff); }
 
 /* ------------------------------------------------------------------ */
 /* Tema brutalist — il terminale come béton brut                       */

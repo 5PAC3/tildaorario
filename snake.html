@@ -86,13 +86,15 @@
             touch-action: none; /* il campo di gioco gestisce lo swipe, niente scroll */
         }
 
-        /* Bottone tema: feedback visibile in dark/light (brutal gestito da main.css) */
-        [data-theme="dark"] .theme-toggle:hover, [data-theme="light"] .theme-toggle:hover {
+        /* Bottone tema: feedback visibile in dark/light/rosa (brutal gestito da main.css) */
+        [data-theme="dark"] .theme-toggle:hover, [data-theme="light"] .theme-toggle:hover,
+        [data-theme="rosa"] .theme-toggle:hover, [data-theme="rosa-dark"] .theme-toggle:hover {
             background: var(--accent-color);
             opacity: 1;
             filter: brightness(1.3);
         }
-        [data-theme="dark"] .theme-toggle:active, [data-theme="light"] .theme-toggle:active {
+        [data-theme="dark"] .theme-toggle:active, [data-theme="light"] .theme-toggle:active,
+        [data-theme="rosa"] .theme-toggle:active, [data-theme="rosa-dark"] .theme-toggle:active {
             filter: brightness(1.6);
         }
 

@@ -6,7 +6,9 @@
         { value: 'brutal',       label: 'Brutal scuro',  bg: '#1a1a1a', accent: '#cfcfcf' },
         { value: 'brutal-light', label: 'Brutal chiaro', bg: '#d9d9d9', accent: '#333333' },
         { value: 'dark',         label: 'Scuro',         bg: '#0d1117', accent: '#44633F' },
-        { value: 'light',        label: 'Chiaro',        bg: '#f6f8fa', accent: '#6a8d60' }
+        { value: 'light',        label: 'Chiaro',        bg: '#f6f8fa', accent: '#6a8d60' },
+        { value: 'rosa',         label: 'Rosa chiaro',   bg: '#fdf4f7', accent: '#d16a96' },
+        { value: 'rosa-dark',    label: 'Rosa scuro',    bg: '#241b22', accent: '#ef97bd' }
     ];
 
     // Tema di default quando non c'è nulla di salvato (vedi bootstrap sotto).
