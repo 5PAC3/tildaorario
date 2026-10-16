@@ -887,22 +887,19 @@ footer a:hover { color: var(--accent-color); }
 [data-theme^="rosa"] .day-nav-btn,
 [data-theme^="rosa"] .day-lesson { transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease; }
 
-/* Motivo nastro (\f263 = fa-ribbon) al posto dei prefissi brutal */
+/* Cuoricino al posto del prefisso brutal ("// ", "> ") */
 [data-theme^="rosa"] header h1::before {
-    content: "\f263";
-    font-family: 'JetBrains Mono Nerd';
+    content: '♡ ';
     color: var(--accent-color);
     font-size: 0.85em;
 }
 [data-theme^="rosa"] .current-info .value::before {
-    content: "\f263";
-    font-family: 'JetBrains Mono Nerd';
+    content: '♡ ';
     color: var(--accent-color);
     font-size: 0.8em;
 }
 [data-theme^="rosa"] .footer-line::before {
-    content: "\f263";
-    font-family: 'JetBrains Mono Nerd';
+    content: '♡ ';
     color: var(--accent-color);
 }
 [data-theme^="rosa"] .footer-sep { color: var(--accent-color); }
@@ -1012,12 +1009,9 @@ footer a:hover { color: var(--accent-color); }
 [data-theme^="rosa"] *::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--accent-color) 50%, transparent); border-radius: 0; }
 [data-theme^="rosa"] *::-webkit-scrollbar-thumb:hover { background: var(--accent-color); }
 
-/* Loading: nastro prima del testo */
+/* Loading: cuoricino prima del testo */
 [data-theme^="rosa"] .loading-screen .spinner { color: var(--accent-color); }
-[data-theme^="rosa"] .loading-screen .loading-text::before {
-    content: "\f263";
-    font-family: 'JetBrains Mono Nerd';
-}
+[data-theme^="rosa"] .loading-screen .loading-text::before { content: '♡ '; }
 
 /* Calendario, snake, login (pagine WIP, ma coerenti lo stesso) */
 [data-theme^="rosa"] .modal-box { border-radius: 6px; border: 2px solid color-mix(in srgb, var(--accent-color) 30%, var(--cal-border)); }
@@ -1099,11 +1093,11 @@ footer a:hover { color: var(--accent-color); }
     body.mobile-table .actions-bar { display: flex; }
     header { position: relative; margin-bottom: 1rem; padding-bottom: 1rem; justify-content: center; gap: 0.6rem; }
     header h1 { font-size: 1.25rem; }
-    /* App bar (home): titolo a sinistra, impostazioni a destra, nav sotto */
+    /* App bar (home): titolo + nav affiancati a sinistra, impostazioni a destra */
     .app-bar { justify-content: space-between; }
     .app-bar h1 { order: 1; }
-    .app-bar .controls-toggle { order: 2; }
-    .app-bar .main-nav { order: 3; margin-left: auto; margin-right: auto; }
+    .app-bar .main-nav { order: 2; margin-left: 0.25rem; margin-right: 0; }
+    .app-bar .controls-toggle { order: 3; margin-left: auto; }
 
     /* Pannello impostazioni: sezione laterale che scorre da destra */
     .controls-toggle { display: inline-flex; }
@@ -1130,9 +1124,11 @@ footer a:hover { color: var(--accent-color); }
         overflow-x: hidden;   /* solo verticale */
         background: var(--cal-bg);
         border-left: 1px solid var(--cal-border);
-        box-shadow: -8px 0 30px rgba(0, 0, 0, 0.4);
         transform: translateX(100%);
     }
+    /* Ombra solo col pannello aperto: da chiuso (fuori viewport) non deve
+       sbucare come una fascia scura sul bordo destro dello schermo */
+    body.controls-open .controls-menu { box-shadow: -8px 0 30px rgba(0, 0, 0, 0.4); }
     body.controls-open .controls-menu { transform: none; animation: drawer-in 160ms ease; }
     body.controls-closing .controls-menu { animation: drawer-out 150ms ease; }
     body.controls-closing .controls-backdrop { animation: backdrop-out 150ms ease; }
