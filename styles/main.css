@@ -1293,3 +1293,19 @@ td.search-highlight { animation: search-in 260ms ease; }
     ::view-transition-new(root),
     ::view-transition-group(root) { animation: none !important; }
 }
+
+/* Nasconde il badge "Powered by Netlify" iniettato in produzione dallo
+   script HUD (/.netlify/scripts/hud → iframe #nl-badge-frame). Non fa parte
+   del nostro markup: Netlify lo monta in basso a destra e sul piano gratuito
+   spesso non ha il toggle per disattivarlo. Doppio strato: questi stili +
+   js/netlify-badge.js (rimuove gli elementi via MutationObserver). */
+#nl-badge-frame,
+.nl-badge,
+iframe[src*="/.netlify/"],
+a[href*="netlify.com"],
+a[href*="netlify.com"] img {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
