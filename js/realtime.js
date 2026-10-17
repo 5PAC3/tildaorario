@@ -104,11 +104,11 @@ const SUBJECT_COLORS = [
     '#7d8a72', '#6e7a85', '#9c7380', '#5f8a85', '#a3906e',
 ];
 
-// Palette per i temi rosa: toni molto accesi (rosa shocking, fucsia,
-// viola elettrico, corallo) ma senza virare nel neon candy.
+// Palette per i temi rosa: tutta sulla famiglia rosa (hot pink, fucsia,
+// magenta, rosa corallo) — niente viola/blu — e saturazione piena.
 const SUBJECT_COLORS_ROSA = [
-    '#ff3d80', '#b84df0', '#ff5470', '#8b5cff', '#ff69a8',
-    '#f0429c', '#d94fd0', '#7c66ff', '#ff77b0', '#c94db8',
+    '#ff2d75', '#ff1493', '#ff5c8a', '#f5399c', '#ff3d80',
+    '#ff6fa5', '#e91e8c', '#ff477e', '#d81b8c', '#ff5299',
 ];
 
 let subjectColorMap = {};

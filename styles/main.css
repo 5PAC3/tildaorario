@@ -112,21 +112,21 @@
     --rosa-ink: #fdf7f9;
 }
 
-/* Rosa scuro — vino/prugna profondo con accento rosa cipria */
+/* Rosa scuro — prugna/viola profondo (non rosaceo) con accento rosa cipria */
 [data-theme="rosa-dark"] {
-    --cal-bg: #34222f;
-    --cal-header-bg: #3f2b3a;
-    --cal-day-bg: #3f2b3a;
-    --cal-border: #5b4153;
-    --cal-border-light: #6b4e62;
+    --cal-bg: #2b2132;
+    --cal-header-bg: #372b40;
+    --cal-day-bg: #372b40;
+    --cal-border: #4e3f59;
+    --cal-border-light: #5c4b69;
     --cal-text: #f5e6ee;
-    --cal-text-muted: #bb95a8;
+    --cal-text-muted: #ab9bb8;
     --accent-color: #e58aad;
     --cal-orange: #e89bb2;
     --cal-current-outline: rgba(245, 230, 238, 0.6);
     --cal-current-bg: rgba(229, 138, 173, 0.14);
     --cal-search-outline: #f5e6ee;
-    --cal-cell-alt: #3a2635;
+    --cal-cell-alt: #312738;
     /* "Ink": testo su superfici accent (l'accent è chiaro → ink scuro) */
     --rosa-ink: #221820;
 }

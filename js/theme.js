@@ -3,7 +3,7 @@
    e costruisce il selettore quando il DOM è pronto. */
 (function () {
     var THEMES = [
-        { value: 'rosa-dark',    label: 'Rosa scuro',    bg: '#34222f', accent: '#e58aad' },
+        { value: 'rosa-dark',    label: 'Rosa scuro',    bg: '#2b2132', accent: '#e58aad' },
         { value: 'rosa',         label: 'Rosa chiaro',   bg: '#f3e2ea', accent: '#b8436b' },
         { value: 'brutal',       label: 'Brutal scuro',  bg: '#1a1a1a', accent: '#cfcfcf' },
         { value: 'brutal-light', label: 'Brutal chiaro', bg: '#d9d9d9', accent: '#333333' },
