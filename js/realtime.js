@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', initTheme);
 
 // Dati caricati via fetch — modificali nei JSON, non qui:
 //   orario.json  lezioni per giorno (chiavi 0–4 = lun–ven)
-//   aule.json    stanza -> link dell'aula (es. accesso AUNICA)
+//   aule.json    stanza -> link dell'aula (ingresso su Google Maps)
 let RAW_SCHEDULE = {};
 let ROOM_LINKS = {};
 

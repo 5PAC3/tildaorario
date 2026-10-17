@@ -56,13 +56,13 @@ L'orario sta in **`orario.json`** (chiavi `0`–`4` = lunedì–venerdì):
 Viene caricato via `fetch` da `js/realtime.js`. Per aggiornarlo basta modificare il JSON:
 niente da toccare nel codice.
 
-I link delle aule (porta dell'aula) stanno invece in **`aule.json`**, mappa
-stanza → link, caricato nello stesso momento. Al momento è vuoto (`{}`), perché
-le aule del nuovo orario non hanno ancora un link:
+I link delle aule (ingresso su Google Maps) stanno invece in **`aule.json`**, mappa
+stanza → link, caricato nello stesso momento. Le chiavi devono combaciare **al
+carattere** con il campo `room` di `orario.json`:
 
 ```json
 {
-  "Aula 11 - Conservatorio (Edificio 3)": "https://esempio.it/aula"
+  "Aula 11 - Conservatorio (Edificio 3)": "https://www.google.com/maps/search/?api=1&query=45.4657931%2C9.2026631"
 }
 ```
 
