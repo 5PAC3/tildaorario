@@ -73,3 +73,18 @@ link, la corrispondenza in `aule.json`.
 
 `main` è collegato a Netlify (ogni push = deploy in produzione). Il lavoro va fatto sui
 branch (`dev`, `feat/*`, …). Vedi `AGENTS.md`.
+
+### Badge "Powered by Netlify"
+
+Netlify inietta in produzione un badge (iframe `#nl-badge-frame` dallo script HUD
+`/.netlify/scripts/hud`). Sul piano gratuito spesso manca il toggle per disattivarlo,
+ quindi viene nascosto lato client con **due strati**:
+
+- **CSS** (`styles/main.css`, in fondo): regole che nascondono `#nl-badge-frame`,
+  `.nl-badge`, gli iframe da `/.netlify/` e i link a netlify.com.
+- **JS** (`js/netlify-badge.js`, linkato in tutte le pagine): un `MutationObserver`
+  che **rimuove** quegli elementi dal DOM non appena compaiono — l'iframe viene
+  iniettato *dopo* il parsing, quindi il CSS da solo non basterebbe.
+
+Se in futuro servisse un link legittimo a netlify.com nel footer, ricordarsi che il
+selettore `a[href*="netlify.com"]` lo nasconderebbe: va ristretto.
