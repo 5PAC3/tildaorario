@@ -1,9 +1,0 @@
-Aula 1 — sede di via Livorno 1
-https://www.google.com/maps/dir/?api=1&destination=Via+Livorno+1%2C+20122+Milano%2C+Italia
-
-Aula 11 — Edificio 3, sede di via Conservatorio 7
-https://www.google.com/maps/search/?api=1&query=45.4657931%2C9.2026631
-
-Aula 6 — Edificio 4, sede di via Conservatorio 7
-https://www.google.com/maps/search/?api=1&query=45.4657931%2C9.2026631
-
