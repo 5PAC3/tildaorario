@@ -162,13 +162,6 @@ function slotToHourLabel(slot) {
     return `:${m.toString().padStart(2, '0')}`;
 }
 
-function getSubjectColor(subject) {
-    if (!subjectColorMap[subject]) {
-        subjectColorMap[subject] = SUBJECT_COLORS[Object.keys(subjectColorMap).length % SUBJECT_COLORS.length];
-    }
-    return subjectColorMap[subject];
-}
-
 function buildGrid() {
     grid = Array.from({ length: TOTAL_SLOTS }, () => Array(5).fill(null));
 
