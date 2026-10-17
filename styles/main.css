@@ -954,7 +954,7 @@ footer a:hover { color: var(--accent-color); }
 /* Blocco lezione: lastra piatta tinta, una cella sola (come brutal),
    niente bordi laterali */
 [data-theme^="rosa"] td.block {
-    background: color-mix(in srgb, var(--subject-color) 35%, var(--cal-header-bg));
+    background: color-mix(in srgb, var(--subject-color) 26%, var(--cal-header-bg));
     border: none;
 }
 [data-theme^="rosa"] .subject-cell {
@@ -970,7 +970,7 @@ footer a:hover { color: var(--accent-color); }
     width: 100%;
 }
 [data-theme^="rosa"] .room-cell { color: color-mix(in srgb, var(--subject-color) 60%, var(--cal-text)); font-size: 0.7rem; font-weight: 400; line-height: 1.4; white-space: normal; overflow-wrap: anywhere; }
-[data-theme^="rosa"] td[data-link]:hover { background: color-mix(in srgb, var(--subject-color) 52%, var(--cal-header-bg)); filter: none; }
+[data-theme^="rosa"] td[data-link]:hover { background: color-mix(in srgb, var(--subject-color) 40%, var(--cal-header-bg)); filter: none; }
 
 /* Ricerca: contorno pieno accent sul blocco (una cella sola → lastra intera) */
 [data-theme^="rosa"] td.search-highlight {

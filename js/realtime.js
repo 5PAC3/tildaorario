@@ -104,11 +104,11 @@ const SUBJECT_COLORS = [
     '#7d8a72', '#6e7a85', '#9c7380', '#5f8a85', '#a3906e',
 ];
 
-// Palette per i temi rosa: tutta sulla famiglia rosa (hot pink, fucsia,
-// magenta, rosa corallo) — niente viola/blu — e saturazione piena.
+// Palette per i temi rosa: rosa polvere, berry, mauve e prugna. Sempre
+// famiglia rosa ma desaturata — elegante, niente shocking/neon.
 const SUBJECT_COLORS_ROSA = [
-    '#ff2d75', '#ff1493', '#ff5c8a', '#f5399c', '#ff3d80',
-    '#ff6fa5', '#e91e8c', '#ff477e', '#d81b8c', '#ff5299',
+    '#d16b8e', '#b55c8a', '#c96b7a', '#9e5d94', '#e08898',
+    '#a04a72', '#c05a85', '#8a5a8e', '#d97a8a', '#b04a6a',
 ];
 
 let subjectColorMap = {};
